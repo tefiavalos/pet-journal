@@ -340,7 +340,7 @@ Además, la relación muchos-a-muchos entre usuarios y mascotas plantea un probl
 
 Por estas características, MERN no se selecciona únicamente por ser un stack conocido, sino porque sus tecnologías se adaptan a las necesidades del proyecto.
 
-## 10. Plan de trabajo (a revisar)
+## 10. Plan de trabajo
 
 El desarrollo se dividirá en etapas.
 
