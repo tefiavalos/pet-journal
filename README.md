@@ -259,7 +259,7 @@ Los datos ingresados deberán validarse tanto en frontend como en backend.
 
 ### RNF07 — Persistencia
 
-La información registrada deberá conservarse y poder ser consultada posteriormente. En el caso de tareas cotidianas será por 3 meses, para eventos veterinarios 25 años, o el equivalente a 12 registros anuales por 25 años.
+La información registrada deberá conservarse y poder ser consultada posteriormente.
 
 ## 8. Stack tecnológico
 
