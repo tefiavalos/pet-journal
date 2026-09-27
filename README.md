@@ -594,7 +594,7 @@ La relación muchos a muchos con usuarios se resuelve embebiendo el arreglo resp
 }
 ```
 
-Tomamos como índice responsables.usuarioId (para resolver rápidamente “mis mascotas”) y codigoInvitacion único (para la vinculación de nuevos responsables, RF04)
+Tomamos como índice responsables.usuarioId (para resolver rápidamente “mis mascotas”) y codigoInvitacion único (para la vinculación de nuevos responsables, RF04). El listado completo de índices de todas las colecciones está en [`database/README.md`](database/README.md).
 
 ### tareasDiarias
 
@@ -653,9 +653,9 @@ Cuando la fecha del evento futuro transcurre y se marca como realizado, sus dato
 
 ### Resumen de decisiones de modelado
 
-| Entidad                      | Colección                                  |
-| ---------------------------- | ------------------------------------------ |
 | Diagrama entidad-relación    | Esquema no relacional (Pet Journal)        |
+| ---------------------------- | ------------------------------------------ |
+| Entidad                      | Colección                                  |
 | Instancia de entidad         | Documento (JSON)                           |
 | Relación M:N usuario-mascota | Embedding (responsables dentro de mascota) |
 | Relación 1:N mascota-evento  | Referencia (`mascotaId` en cada evento)    |
@@ -663,6 +663,8 @@ Cuando la fecha del evento futuro transcurre y se marca como realizado, sus dato
 
 
 Los avisos (RF12) no son una colección propia: se calculan en el momento, filtrando eventosFuturos por proximidad de fecha.
+
+Los scripts que crean las colecciones con sus validaciones, los índices y los datos de prueba están en [`/database`](database/README.md).
 
 ## 3. Módulos y arquitectura
 
@@ -706,13 +708,17 @@ Alta y edición de turnos, y cálculo de los próximos eventos a mostrar al ingr
 
 Se puede encontrar una imagen del diagrama junto con el código completo para reproducirse en https://plantuml.com/es/ en la carpeta `docs\diagramas\2. Arquitectura por capas y módulos`
 
+El diagrama de clases del dominio se encuentra en la carpeta [`docs/diagramas/3. Diagrama de clases`](docs/diagramas/3.%20Diagrama%20de%20clases).
+
+El detalle de cada módulo, con su prioridad y sus dependencias, está en [`docs/modulos.md`](docs/modulos.md). La descripción completa de la arquitectura, las tecnologías y la justificación de las decisiones técnicas está en [`docs/arquitectura.md`](docs/arquitectura.md).
+
 ## 4. Próximos pasos
 
-Con la base de datos y los módulos definidos, la siguiente etapa implica avanzar con la configuración inicial del repositorio, la autenticación de usuarios y el CRUD de mascotas, según los hitos ya planificados.
+Con la base de datos, los módulos y la estructura del repositorio definidos, la siguiente etapa implica avanzar con la instalación de dependencias y la configuración inicial del proyecto, la autenticación de usuarios y el CRUD de mascotas, según los hitos ya planificados.
 
 ## 5. Revisión y refinamiento asistido por IA
 
-Después de la revisión de la primera revisión sobre esta entrega, retomamos el diseño con ayuda de herramientas de inteligencia artificial para analizar sus comentarios, evaluar alternativas y refinar tanto las decisiones de modelado como su justificación en este documento.
+Después de la primera revisión del tutor sobre esta entrega, retomamos el diseño con ayuda de herramientas de inteligencia artificial para analizar sus comentarios, evaluar alternativas y refinar tanto las decisiones de modelado como su justificación en este documento.
 
 ### 5.1 Catálogos vs. valores fijos
 

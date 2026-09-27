@@ -7,6 +7,6 @@ API REST de Pet Journal. Por ahora solo contiene la estructura de carpetas; el c
 | `src/routes` | Aplicación | Definición de endpoints por módulo (usuarios, mascotas, tareas, eventos) |
 | `src/controllers` | Aplicación | Reciben la petición, llaman al servicio y devuelven la respuesta |
 | `src/middlewares` | Aplicación | Autenticación JWT, validación de datos y manejo de errores |
-| `src/services` | Dominio | Reglas de negocio de cada módulo |
+| `src/services` | Dominio | Reglas de negocio de cada módulo (los componentes "Gestión de …" del diagrama de arquitectura) |
 | `src/models` | Infraestructura | Modelos Mongoose de cada colección |
 | `src/config` | Infraestructura | Conexión a MongoDB y variables de entorno |

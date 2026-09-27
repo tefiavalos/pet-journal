@@ -11,6 +11,8 @@ El sistema es una aplicación web cliente-servidor organizada en **4 capas**: Pr
 | Dominio         | Reglas de negocio, independientes de la tecnología de persistencia              | Node.js (servicios de dominio)  | `/backend/src/services`                           |
 | Infraestructura | Persistencia, autenticación técnica e integraciones externas                    | MongoDB (Mongoose), JWT, bcrypt | `/backend/src/models`, `/backend/src/config`      |
 
+**Nota sobre los nombres del diagrama:** en el [diagrama de arquitectura](diagramas/2.%20Arquitectura%20por%20capas%20y%20m%C3%B3dulos/02-arquitectura-capas.png), los componentes llamados "Servicio de …" (por ejemplo, "Servicio de Mascotas") pertenecen a la capa de **Aplicación** y se implementan como rutas y controladores de Express (`src/routes`, `src/controllers`). Los componentes "Gestión de …" pertenecen a la capa de **Dominio** y se implementan en `src/services`.
+
 Flujo de una petición:
 
 ```
@@ -37,6 +39,8 @@ Modelo Mongoose → MongoDB (Infraestructura)
 | Backend       | bcrypt                                          | Hash de contraseñas                                |
 | Base de datos | MongoDB (Atlas en la nube, local en desarrollo) | Persistencia                                       |
 | Versionado    | Git + GitHub                                    | Repositorio único del proyecto                     |
+
+El servicio de almacenamiento de fotos de las mascotas (componente "Almacenamiento de fotos" del diagrama de arquitectura) se definirá más adelante. En la base de datos solo se guarda la URL de la imagen, en el campo `foto`, así que esa elección no modifica el esquema.
 
 ## Justificación de las decisiones técnicas
 
