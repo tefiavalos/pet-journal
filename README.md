@@ -534,3 +534,194 @@ La definición de un MVP nos permitió establecer un alcance concreto y realista
 La utilización de IA durante la planificación nos ayudó a revisar la propuesta, identificar posibles dificultades y organizar las etapas de desarrollo.
 
 A partir de este análisis y considerando los recursos, conocimientos y plazos disponibles, consideramos que el proyecto cuenta con una base adecuada para comenzar su desarrollo.
+
+# Diseño y Módulos
+
+## 1. Diagrama entidad-relación
+
+Antes de pensar en cómo se van a almacenar los datos en MongoDB, modelamos el dominio de forma independiente de la tecnología. La relación muchos a muchos entre USUARIO y MASCOTA se representa mediante una entidad asociativa (RESPONSABLE), que nos permite reflejar que una mascota puede tener varios responsables y que un responsable puede gestionar varias mascotas.
+
+Optamos por separar TAREA_DIARIA, EVENTO_VETERINARIO y EVENTO_FUTURO en lugar de una única entidad “Evento”: aunque las tres representan hechos asociados a una mascota, tienen patrones de uso distintos:
+
+- **TAREA_DIARIA:** se genera y se consulta todos los días, y su relevancia es principalmente a corto plazo.
+- **EVENTO_VETERINARIO:** se registra con menor frecuencia, pero debe poder consultarse en el historial de la mascota a lo largo del tiempo.
+- **EVENTO_FUTURO:** es el único que puede modificarse mientras no haya ocurrido; una vez pasada la fecha, pasa a formar parte del historial veterinario.
+
+Tampoco modelamos como entidades separadas el tipo y la raza de la mascota, el tipo y el estado de la tarea diaria, ni el tipo de consulta de los eventos veterinarios y futuros. Son conjuntos de valores fijos y acotados, estrechamente ligados a la lógica de la aplicación — el tipo de tarea, por ejemplo, define qué ícono y qué formulario se muestra en el frontend — así que preferimos validarlos como valores controlados dentro del propio esquema (enum) en lugar de crear una colección aparte para cada uno. Reservamos las colecciones independientes para conceptos con entidad propia, que pueden crecer o modificarse sin tocar el código: usuarios, mascotas, tareas y eventos. La raza es el caso más discutible de los cuatro: al ser una lista abierta y con razas mixtas, la dejamos como texto libre en vez de un catálogo cerrado, priorizando que se pueda cargar cualquier valor por sobre una validación estricta.
+
+Esta misma separación se mantuvo en el esquema no relacional.
+
+Se puede encontrar una imagen del diagrama junto con el código completo para reproducirse en https://plantuml.com/es/ en la carpeta `docs\diagramas\1. Diagrama Entidad-Relación`
+
+## 2. Esquema de base de datos
+
+Elegimos MongoDB porque los distintos registros asociados a una mascota no tienen necesariamente la misma estructura: un evento de alimentación no contiene los mismos campos que una consulta veterinaria. Además, la relación muchos a muchos entre usuarios y mascotas se resuelve bien embebiendo referencias dentro de los documentos, evitando joins en las consultas más frecuentes de la aplicación.
+
+Definimos 5 colecciones:
+
+### usuarios
+
+```json
+{
+  "_id": "ObjectId('u1')",
+  "nombre": "Estefania Ayala",
+  "email": "estefania.ayala@example.com",
+  "password": "$2b$10$hash...",
+  "celular": "+54 9 11 1234-5678"
+}
+```
+
+### mascotas
+
+La relación muchos a muchos con usuarios se resuelve embebiendo el arreglo responsables dentro de la mascota, en lugar de crear una colección intermedia. Priorizamos así la consulta más frecuente del sistema — validar si un usuario autenticado tiene permiso sobre una mascota (RF13) — que se resuelve leyendo un único documento, sin necesidad de join. La contrapartida es que dar de baja un usuario implica actualizar el arreglo en cada mascota asociada; aceptamos ese trade-off porque la cantidad de responsables por mascota es baja.
+
+```json
+{
+  "_id": "ObjectId('m1')",
+  "nombre": "Luna",
+  "tipo": "perro",
+  "raza": "Labrador",
+  "fechaNacimiento": "2022-03-10",
+  "sexo": "hembra",
+  "peso": 24.5,
+  "foto": "https://.../luna.jpg",
+  "condicionesMedicas": "Alergia alimentaria",
+  "codigoInvitacion": "LUNA-7F3K",
+  "responsables": [
+    { "usuarioId": "ObjectId('u1')", "fechaAsociacion": "2026-08-15" },
+    { "usuarioId": "ObjectId('u2')", "fechaAsociacion": "2026-08-20" }
+  ]
+}
+```
+
+Tomamos como índice responsables.usuarioId (para resolver rápidamente “mis mascotas”) y codigoInvitacion único (para la vinculación de nuevos responsables, RF04)
+
+### tareasDiarias
+
+Instancias diarias de actividades recurrentes de alimentación, medicación y paseo. Cada una tiene su propio estado.
+
+```json
+{
+  "_id": "ObjectId('t1')",
+  "mascotaId": "ObjectId('m1')",
+  "tipo": "ALIMENTACION",
+  "fecha": "2026-09-27",
+  "hora": "08:00",
+  "estado": "PENDIENTE"
+}
+```
+
+### eventosVeterinarios
+
+Historial veterinario ya registrado: consultas, vacunas, estudios, diagnósticos y controles realizados.
+
+```json
+{
+  "_id": "ObjectId('ev1')",
+  "mascotaId": "ObjectId('m1')",
+  "fecha": "2026-09-20",
+  "titulo": "Control anual",
+  "tipoConsulta": "CONTROL",
+  "descripcion": "Se indicó turno de refuerzo de vacuna."
+}
+```
+
+tipoConsulta puede ser CONTROL, URGENCIA, ESPECIALISTA o VACUNA.
+
+### eventosFuturos
+
+Turnos y controles programados, que pueden modificarse mientras no hayan ocurrido. Son la fuente de los avisos que se muestran al ingresar a la aplicación (RF12).
+
+```json
+{
+  "_id": "ObjectId('ef1')",
+  "mascotaId": "ObjectId('m1')",
+  "fecha": "2026-10-15T15:30:00Z",
+  "titulo": "Turno veterinario",
+  "tipoConsulta": "CONTROL",
+  "descripcion": "Refuerzo de vacuna antirrábica",
+  "estado": "PENDIENTE"
+}
+```
+
+Mantuvimos eventosVeterinarios y eventosFuturos como colecciones separadas, aunque tengan casi los mismos campos, por dos motivos:
+
+- **Mutabilidad:** un evento futuro puede reprogramarse o cancelarse mientras no ocurrió; una vez que pasa a formar parte del historial veterinario, ya no debería modificarse. Separarlos evita que un registro histórico se edite por error.
+- **Patrón de acceso:** los avisos (RF12) consultan solo los próximos eventos futuros, una colección chica y de rotación rápida; el historial veterinario, en cambio, crece con el tiempo y se consulta de otra forma (por mascota, ordenado cronológicamente). Separarlas mantiene liviana la consulta de avisos.
+
+Cuando la fecha del evento futuro transcurre y se marca como realizado, sus datos se copian a un nuevo documento en eventosVeterinarios y el evento futuro pasa a estado REALIZADO (o se elimina, según se termine definiendo en la implementación).
+
+### Resumen de decisiones de modelado
+
+| Entidad                      | Colección                                  |
+| ---------------------------- | ------------------------------------------ |
+| Diagrama entidad-relación    | Esquema no relacional (Pet Journal)        |
+| Instancia de entidad         | Documento (JSON)                           |
+| Relación M:N usuario-mascota | Embedding (responsables dentro de mascota) |
+| Relación 1:N mascota-evento  | Referencia (`mascotaId` en cada evento)    |
+| Identificador                | `_id` (ObjectId)                           |
+
+
+Los avisos (RF12) no son una colección propia: se calculan en el momento, filtrando eventosFuturos por proximidad de fecha.
+
+## 3. Módulos y arquitectura
+
+Organizamos el sistema en capas (Presentación, Aplicación, Dominio e Infraestructura), buscando que cada módulo tenga una responsabilidad clara y dependa lo menos posible de los demás.
+
+Algunas decisiones que tomamos:
+
+- El Servicio de Historial no tiene un módulo de dominio propio: combina la lectura de Gestión de Tareas Diarias (actividades marcadas como HECHO) y Gestión de Eventos Veterinarios para armar el historial completo de una mascota (RF06).
+- Gestión de Eventos Futuros depende de Gestión de Eventos Veterinarios porque, al marcarse un turno como realizado, ese módulo se encarga de crear el registro histórico correspondiente.
+- Gestión de Mascotas es el único módulo que valida si un usuario tiene permiso sobre una mascota (RF13, RNF02); los demás módulos no conocen la estructura interna de mascotas.
+
+### Gestión de Usuarios
+
+Alta de cuenta, autenticación y hash de contraseña. (RF01, RF02, RNF01)
+
+### Gestión de Mascotas y Responsables
+
+CRUD de mascota, generación y validación del código de invitación, y control de acceso. (RF03, RF04, RF05, RF13, RNF02)
+
+### Gestión de Tareas Diarias
+
+Generación de instancias diarias, cambio de estado entre PENDIENTE y HECHO, y volcado al historial. (RF08, RF09, RF11)
+
+### Gestión de Eventos Veterinarios
+
+Registro y consulta de consultas, vacunas, estudios y diagnósticos. (RF06, RF07)
+
+### Gestión de Eventos Futuros y Avisos
+
+Alta y edición de turnos, y cálculo de los próximos eventos a mostrar al ingresar. (RF10, RF12)
+
+### Capas y responsabilidades
+
+| Capa            | Responsabilidad                                                   | Tecnología                     |
+| --------------- | ----------------------------------------------------------------- | ------------------------------ |
+| Presentación    | Interacción con el usuario, formularios, validaciones básicas     | React, React Router            |
+| Aplicación      | Orquesta casos de uso, no contiene lógica de negocio              | Express (rutas/controladores)  |
+| Dominio         | Reglas de negocio, independiente de la tecnología de persistencia | Node.js (servicios de dominio) |
+| Infraestructura | Persistencia, autenticación técnica, integraciones externas       | MongoDB (Mongoose), JWT/bcrypt |
+
+
+Se puede encontrar una imagen del diagrama junto con el código completo para reproducirse en https://plantuml.com/es/ en la carpeta `docs\diagramas\2. Arquitectura por capas y módulos`
+
+## 4. Próximos pasos
+
+Con la base de datos y los módulos definidos, la siguiente etapa implica avanzar con la configuración inicial del repositorio, la autenticación de usuarios y el CRUD de mascotas, según los hitos ya planificados.
+
+## 5. Revisión y refinamiento asistido por IA
+
+Después de la revisión de la primera revisión sobre esta entrega, retomamos el diseño con ayuda de herramientas de inteligencia artificial para analizar sus comentarios, evaluar alternativas y refinar tanto las decisiones de modelado como su justificación en este documento.
+
+### 5.1 Catálogos vs. valores fijos
+
+Le planteamos a la IA el comentario realizado sobre la entrega del borrador de las tablas faltantes (tipo y raza de mascota, tipo y estado de tarea diaria, tipo de consulta) y le pedimos que evaluara los pros y contras de modelarlas como colecciones separadas frente a dejarlas como valores fijos dentro del propio esquema, como lo habíamos planteado. A partir de ese análisis llegamos al criterio que usamos en la sección 1: separar en colecciones propias solo los conceptos que pueden crecer o modificarse sin tocar código, y dejar como valores controlados (enum) los conjuntos fijos y acotados que están atados a la lógica de la aplicación. Revisamos ese criterio, lo adaptamos a cada caso y decidimos además dejar la raza como texto libre, por ser una lista abierta.
+
+### 5.2 eventosVeterinarios y eventosFuturos
+
+También le planteamos la duda sobre separar eventosVeterinarios y eventosFuturos, como nosotras lo pensamos en un principio, y si convenía unificarlas en una sola colección. Analizamos con la IA los dos enfoques — una colección única con un campo de estado, o dos colecciones separadas — considerando la mutabilidad de cada tipo de evento y el patrón de consulta de cada uno (avisos frente a historial). Confirmamos la decisión de mantenerlas separadas y dejamos por escrito, en la sección 2, los motivos concretos y el paso de un evento futuro al historial cuando se cumple.
+
+## 6. Conclusión
+
+Consideramos que este esquema de base de datos y la definición de los módulos nos dan una base clara para empezar la implementación. Las decisiones de diseño tomadas — cómo modelar la relación entre usuarios y mascotas, y cómo dividir el sistema en capas — buscan mantener el proyecto simple de entender y de extender a medida que avancemos con las siguientes etapas.

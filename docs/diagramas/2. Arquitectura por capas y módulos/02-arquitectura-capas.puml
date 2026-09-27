@@ -1,0 +1,58 @@
+@startuml Arquitectura_PetJournal
+!theme plain
+skinparam componentStyle rectangle
+skinparam packageStyle rectangle
+
+package "Presentación (React)" as PRES {
+  [UI Eventos Futuros y Avisos] as UI_EF
+  [UI Historial] as UI_HIS
+  [UI Tareas Diarias] as UI_TAR
+  [UI Mascotas] as UI_MAS
+  [UI Usuarios] as UI_USU
+}
+
+package "Aplicación (Express - rutas/controladores)" as APP {
+  [Servicio de Eventos Futuros] as S_EF
+  [Servicio de Historial] as S_HIS
+  [Servicio de Tareas Diarias] as S_TAR
+  [Servicio de Mascotas] as S_MAS
+  [Servicio de Autenticación] as S_AUT
+}
+
+package "Dominio (lógica de negocio)" as DOM {
+  [Gestión de Eventos Futuros y Avisos] as G_EF
+  [Gestión de Eventos Veterinarios] as G_EV
+  [Gestión de Tareas Diarias] as G_TAR
+  [Gestión de Mascotas y Responsables] as G_MAS
+  [Gestión de Usuarios] as G_USU
+}
+
+package "Infraestructura" as INF {
+  database "MongoDB" as MONGO
+  [JWT / bcrypt] as AUTH
+  [Almacenamiento de fotos] as EXT
+}
+
+UI_EF --> S_EF
+UI_HIS --> S_HIS
+UI_TAR --> S_TAR
+UI_MAS --> S_MAS
+UI_USU --> S_AUT
+
+S_EF --> G_EF
+S_HIS --> G_TAR
+S_HIS --> G_EV
+S_TAR --> G_TAR
+S_MAS --> G_MAS
+S_AUT --> G_USU
+
+G_EF --> G_EV
+G_EF --> MONGO
+G_EV --> MONGO
+G_TAR --> MONGO
+G_MAS --> MONGO
+G_USU --> MONGO
+G_USU --> AUTH
+G_MAS --> EXT
+
+@enduml

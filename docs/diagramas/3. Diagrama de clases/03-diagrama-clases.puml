@@ -1,0 +1,75 @@
+@startuml Clases_PetJournal
+!theme plain
+skinparam classAttributeIconSize 0
+
+class Usuario {
+  - id : String
+  - nombre : String
+  - email : String
+  - password : String
+  - celular : String
+  + registrar() : void
+  + autenticar() : boolean
+}
+
+class Mascota {
+  - id : String
+  - nombre : String
+  - tipo : String
+  - raza : String
+  - fechaNacimiento : Date
+  - sexo : String
+  - peso : Float
+  - foto : String
+  - condicionesMedicas : String
+  - codigoInvitacion : String
+  + generarCodigoInvitacion() : String
+  + validarPermiso(usuarioId : String) : boolean
+}
+
+class Responsable {
+  - usuarioId : String
+  - mascotaId : String
+  - fechaAsociacion : Date
+}
+
+class TareaDiaria {
+  - id : String
+  - mascotaId : String
+  - tipo : String
+  - fecha : Date
+  - hora : String
+  - estado : String
+  + cambiarEstado(estado : String) : void
+}
+
+class EventoVeterinario {
+  - id : String
+  - mascotaId : String
+  - fecha : Date
+  - titulo : String
+  - tipoConsulta : String
+  - descripcion : String
+}
+
+class EventoFuturo {
+  - id : String
+  - mascotaId : String
+  - fecha : Date
+  - titulo : String
+  - tipoConsulta : String
+  - descripcion : String
+  - estado : String
+  + reprogramar(fecha : Date) : void
+  + cancelar() : void
+  + marcarRealizado() : void
+}
+
+Usuario "1" --> "0..*" Responsable : administra
+Mascota "1" --> "0..*" Responsable : es administrada por
+Mascota "1" --> "0..*" TareaDiaria : tiene
+Mascota "1" --> "0..*" EventoVeterinario : tiene
+Mascota "1" --> "0..*" EventoFuturo : tiene
+EventoFuturo ..> EventoVeterinario : se convierte en
+
+@enduml

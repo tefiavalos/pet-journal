@@ -1,0 +1,72 @@
+@startuml DiagramaER_PetJournal
+!theme plain
+skinparam linetype ortho
+
+entity "USUARIO" as usuario {
+  * id : string <<PK>>
+  --
+  nombre : string
+  email : string
+  password : string
+  celular : string
+}
+
+entity "MASCOTA" as mascota {
+  * id : string <<PK>>
+  --
+  nombre : string
+  tipo : string
+  raza : string
+  fechaNacimiento : date
+  sexo : string
+  peso : float
+  foto : string
+  condicionesMedicas : string
+  codigoInvitacion : string
+}
+
+entity "RESPONSABLE" as responsable {
+  * usuarioId : string <<FK>>
+  * mascotaId : string <<FK>>
+  --
+  fechaAsociacion : date
+}
+
+entity "TAREA_DIARIA" as tarea {
+  * id : string <<PK>>
+  --
+  mascotaId : string <<FK>>
+  tipo : string
+  fecha : date
+  hora : string
+  estado : string
+}
+
+entity "EVENTO_VETERINARIO" as eventoVet {
+  * id : string <<PK>>
+  --
+  mascotaId : string <<FK>>
+  fecha : date
+  titulo : string
+  tipoConsulta : string
+  descripcion : string
+}
+
+entity "EVENTO_FUTURO" as eventoFut {
+  * id : string <<PK>>
+  --
+  mascotaId : string <<FK>>
+  fecha : date
+  titulo : string
+  tipoConsulta : string
+  descripcion : string
+  estado : string
+}
+
+usuario ||--o{ responsable : administra
+mascota ||--o{ responsable : "es administrada por"
+mascota ||--o{ tarea : tiene
+mascota ||--o{ eventoVet : tiene
+mascota ||--o{ eventoFut : tiene
+
+@enduml
