@@ -1,6 +1,28 @@
 # Backend — Node.js + Express
 
-API REST de Pet Journal. Por ahora solo contiene la estructura de carpetas; el código se incorpora después de la aprobación de la 2.ª entrega.
+API REST de Pet Journal.
+
+## Cómo ejecutarlo
+
+Requiere Node.js 20 o superior.
+
+```bash
+cd backend
+npm install
+cp .env.example .env
+npm run dev
+```
+
+El servidor queda escuchando en `http://localhost:3000` (o en el puerto definido en `PORT`).
+
+## Variables de entorno
+
+| Variable | Descripción |
+|----------|-------------|
+| `PORT` | Puerto del servidor |
+| `CORS_ORIGIN` | URL del frontend que puede consumir la API |
+
+## Estructura
 
 | Carpeta | Capa | Contenido |
 |---------|------|-----------|
