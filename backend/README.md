@@ -4,7 +4,7 @@ API REST de Pet Journal.
 
 ## Cómo ejecutarlo
 
-Requiere Node.js 20 o superior.
+Requiere Node.js 20 o superior y una base MongoDB (local o en Atlas). Antes de levantar la API conviene correr los scripts de [`/database`](../database/README.md), que crean las colecciones con sus validaciones e índices.
 
 ```bash
 cd backend
@@ -20,6 +20,7 @@ El servidor queda escuchando en `http://localhost:3000` (o en el puerto definido
 | Variable | Descripción |
 |----------|-------------|
 | `PORT` | Puerto del servidor |
+| `MONGODB_URI` | Cadena de conexión a MongoDB |
 | `CORS_ORIGIN` | URL del frontend que puede consumir la API |
 
 ## Estructura
