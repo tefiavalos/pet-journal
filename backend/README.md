@@ -13,7 +13,7 @@ cp .env.example .env
 npm run dev
 ```
 
-El servidor queda escuchando en `http://localhost:3000` (o en el puerto definido en `PORT`).
+El servidor queda escuchando en `http://localhost:3000` (o en el puerto definido en `PORT`). Para verificar que la API y la base estén funcionando: `GET http://localhost:3000/api/health`.
 
 ## Variables de entorno
 
