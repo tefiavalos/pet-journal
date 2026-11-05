@@ -1,6 +1,18 @@
 # Frontend — React
 
-Interfaz web de Pet Journal (capa de Presentación). Por ahora solo contiene la estructura de carpetas; el código se incorpora después de la aprobación de la 2.ª entrega.
+Interfaz web de Pet Journal (capa de Presentación), creada con React y Vite.
+
+## Cómo ejecutarlo
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+La aplicación queda disponible en `http://localhost:5173`.
+
+## Estructura
 
 | Carpeta | Contenido |
 |---------|-----------|
