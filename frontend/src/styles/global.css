@@ -43,3 +43,43 @@ a {
   width: min(100% - 2rem, 1100px);
   margin-inline: auto;
 }
+
+/* Layout */
+
+.layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.layout__principal {
+  flex: 1;
+  padding-block: 2rem;
+}
+
+.encabezado {
+  background-color: var(--color-superficie);
+  border-bottom: 1px solid var(--color-borde);
+  box-shadow: var(--sombra);
+}
+
+.encabezado__contenido {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 64px;
+}
+
+.encabezado__marca {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--color-primario);
+  text-decoration: none;
+}
+
+.pie {
+  padding-block: 1rem;
+  font-size: 0.875rem;
+  color: var(--color-texto-suave);
+  border-top: 1px solid var(--color-borde);
+}

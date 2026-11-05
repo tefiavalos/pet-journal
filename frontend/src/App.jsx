@@ -1,10 +1,7 @@
+import AppRouter from './routes/AppRouter.jsx';
+
 function App() {
-  return (
-    <main className="contenedor">
-      <h1>Pet Journal</h1>
-      <p>Toda la información de tus mascotas en un solo lugar.</p>
-    </main>
-  );
+  return <AppRouter />;
 }
 
 export default App;
