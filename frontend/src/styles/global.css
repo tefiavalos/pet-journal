@@ -77,6 +77,24 @@ a {
   text-decoration: none;
 }
 
+.estado-api {
+  display: inline-block;
+  padding: 0.5rem 0.875rem;
+  font-size: 0.875rem;
+  color: var(--color-texto-suave);
+  background-color: var(--color-superficie);
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio);
+}
+
+.estado-api--ok {
+  color: var(--color-exito);
+}
+
+.estado-api--error {
+  color: var(--color-error);
+}
+
 .pie {
   padding-block: 1rem;
   font-size: 0.875rem;

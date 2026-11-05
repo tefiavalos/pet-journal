@@ -7,10 +7,17 @@ Interfaz web de Pet Journal (capa de Presentación), creada con React y Vite.
 ```bash
 cd frontend
 npm install
+cp .env.example .env
 npm run dev
 ```
 
-La aplicación queda disponible en `http://localhost:5173`.
+La aplicación queda disponible en `http://localhost:5173`. Para que funcione completa, el backend tiene que estar levantado.
+
+## Variables de entorno
+
+| Variable | Descripción |
+|----------|-------------|
+| `VITE_API_URL` | URL base de la API |
 
 ## Estructura
 
