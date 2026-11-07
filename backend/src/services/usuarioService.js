@@ -26,3 +26,11 @@ export async function login({ email, password }) {
 
   return { token, usuario };
 }
+
+export async function obtenerPorId(id) {
+  const usuario = await Usuario.findById(id);
+  if (!usuario) {
+    throw new ErrorApp(401, 'El usuario ya no existe');
+  }
+  return usuario;
+}

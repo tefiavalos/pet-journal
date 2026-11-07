@@ -9,3 +9,8 @@ export async function login(req, res) {
   const resultado = await usuarioService.login(req.body);
   res.json(resultado);
 }
+
+export async function perfil(req, res) {
+  const usuario = await usuarioService.obtenerPorId(req.usuarioId);
+  res.json({ usuario });
+}

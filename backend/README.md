@@ -32,6 +32,9 @@ El servidor queda escuchando en `http://localhost:3000` (o en el puerto definido
 | GET | `/api/health` | Estado de la API y de la base | No |
 | POST | `/api/auth/registro` | Crea una cuenta y devuelve el token | No |
 | POST | `/api/auth/login` | Inicia sesión y devuelve el token | No |
+| GET | `/api/auth/perfil` | Datos del usuario autenticado | Sí |
+
+Los endpoints protegidos esperan el header `Authorization: Bearer <token>`. Los errores se devuelven siempre con el formato `{ "mensaje": "..." }`.
 
 ## Estructura
 
