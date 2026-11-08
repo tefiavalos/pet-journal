@@ -97,6 +97,30 @@ a {
   color: #fff;
 }
 
+.navegacion__usuario {
+  color: var(--color-texto-suave);
+  font-size: 0.925rem;
+}
+
+.portada {
+  max-width: 640px;
+  margin: 2rem auto;
+  text-align: center;
+}
+
+.portada h1 {
+  font-size: 2.5rem;
+  color: var(--color-primario);
+}
+
+.portada__acciones {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.25rem;
+  margin-block: 1.5rem 2rem;
+}
+
 /* Botones */
 
 .boton {
@@ -122,6 +146,24 @@ a {
 .boton:disabled {
   opacity: 0.6;
   cursor: not-allowed;
+}
+
+.boton--secundario {
+  color: var(--color-primario);
+  background-color: transparent;
+}
+
+.boton--secundario:hover {
+  color: #fff;
+}
+
+.boton--peligro {
+  background-color: var(--color-error);
+  border-color: var(--color-error);
+}
+
+.boton--peligro:hover {
+  background-color: #a11f1f;
 }
 
 .boton--chico {

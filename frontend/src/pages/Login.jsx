@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext.jsx';
 import { obtenerMensajeError } from '../services/api.js';
 import Alerta from '../components/Alerta.jsx';
@@ -7,6 +7,9 @@ import Alerta from '../components/Alerta.jsx';
 function Login() {
   const { iniciarSesion } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
+  // Si llegó desde una ruta protegida, después del login vuelve ahí
+  const destino = location.state?.desde?.pathname || '/mascotas';
 
   const [form, setForm] = useState({ email: '', password: '' });
   const [error, setError] = useState('');
@@ -28,7 +31,7 @@ function Login() {
     setEnviando(true);
     try {
       await iniciarSesion(form.email, form.password);
-      navigate('/');
+      navigate(destino, { replace: true });
     } catch (err) {
       setError(obtenerMensajeError(err));
     } finally {

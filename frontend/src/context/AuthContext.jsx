@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 import * as authService from '../services/authService.js';
-import { obtenerToken, guardarToken } from '../services/api.js';
+import { obtenerToken, guardarToken, configurarSesionExpirada } from '../services/api.js';
 
 const AuthContext = createContext(null);
 
@@ -17,6 +17,15 @@ export function AuthProvider({ children }) {
       .then(setUsuario)
       .catch(() => guardarToken(null))
       .finally(() => setCargando(false));
+  }, []);
+
+  // Si el token vence mientras se usa la app, se cierra la sesión
+  useEffect(() => {
+    configurarSesionExpirada(() => {
+      guardarToken(null);
+      setUsuario(null);
+    });
+    return () => configurarSesionExpirada(null);
   }, []);
 
   async function iniciarSesion(email, password) {

@@ -1,6 +1,15 @@
-import { Link, NavLink, Outlet } from 'react-router-dom';
+import { Link, NavLink, Outlet, useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext.jsx';
 
 function Layout() {
+  const { usuario, estaAutenticado, cerrarSesion } = useAuth();
+  const navigate = useNavigate();
+
+  function handleCerrarSesion() {
+    cerrarSesion();
+    navigate('/login');
+  }
+
   return (
     <div className="layout">
       <header className="encabezado">
@@ -9,12 +18,22 @@ function Layout() {
             🐾 Pet Journal
           </Link>
 
-          <nav className="navegacion">
-            <NavLink to="/login">Iniciar sesión</NavLink>
-            <NavLink to="/registro" className="boton boton--chico">
-              Crear cuenta
-            </NavLink>
-          </nav>
+          {estaAutenticado ? (
+            <nav className="navegacion">
+              <NavLink to="/mascotas">Mis mascotas</NavLink>
+              <span className="navegacion__usuario">{usuario.nombre}</span>
+              <button type="button" className="boton boton--chico boton--secundario" onClick={handleCerrarSesion}>
+                Cerrar sesión
+              </button>
+            </nav>
+          ) : (
+            <nav className="navegacion">
+              <NavLink to="/login">Iniciar sesión</NavLink>
+              <NavLink to="/registro" className="boton boton--chico">
+                Crear cuenta
+              </NavLink>
+            </nav>
+          )}
         </div>
       </header>
 

@@ -30,6 +30,24 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
+// Si el backend responde 401 a una petición con token, la sesión expiró
+let alExpirarSesion = null;
+
+export function configurarSesionExpirada(callback) {
+  alExpirarSesion = callback;
+}
+
+api.interceptors.response.use(
+  (respuesta) => respuesta,
+  (error) => {
+    const teniaToken = Boolean(error.config?.headers?.Authorization);
+    if (error.response?.status === 401 && teniaToken && alExpirarSesion) {
+      alExpirarSesion();
+    }
+    return Promise.reject(error);
+  },
+);
+
 // Devuelve el mensaje que manda el backend o uno genérico si no hubo respuesta
 export function obtenerMensajeError(error) {
   if (error.response?.data?.mensaje) {
