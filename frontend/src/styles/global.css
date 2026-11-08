@@ -77,6 +77,136 @@ a {
   text-decoration: none;
 }
 
+.navegacion {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.navegacion a {
+  color: var(--color-texto);
+  text-decoration: none;
+}
+
+.navegacion a.active {
+  color: var(--color-primario);
+  font-weight: 600;
+}
+
+.navegacion a.boton {
+  color: #fff;
+}
+
+/* Botones */
+
+.boton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.625rem 1.125rem;
+  font: inherit;
+  font-weight: 600;
+  color: #fff;
+  text-decoration: none;
+  background-color: var(--color-primario);
+  border: 1px solid var(--color-primario);
+  border-radius: var(--radio);
+  cursor: pointer;
+}
+
+.boton:hover {
+  background-color: var(--color-primario-oscuro);
+}
+
+.boton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.boton--chico {
+  padding: 0.375rem 0.875rem;
+  font-size: 0.875rem;
+}
+
+/* Tarjetas y formularios */
+
+.tarjeta {
+  padding: 1.5rem;
+  background-color: var(--color-superficie);
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio);
+  box-shadow: var(--sombra);
+}
+
+.tarjeta--angosta {
+  max-width: 420px;
+  margin-inline: auto;
+}
+
+.tarjeta h1 {
+  margin-top: 0;
+}
+
+.formulario {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.campo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+  font-weight: 500;
+}
+
+.campo small {
+  font-weight: 400;
+  color: var(--color-texto-suave);
+}
+
+.campo input,
+.campo select,
+.campo textarea {
+  padding: 0.625rem 0.75rem;
+  font: inherit;
+  color: var(--color-texto);
+  background-color: #fff;
+  border: 1px solid var(--color-borde);
+  border-radius: 8px;
+}
+
+.campo input:focus,
+.campo select:focus,
+.campo textarea:focus {
+  outline: 2px solid var(--color-primario);
+  outline-offset: -1px;
+}
+
+.alerta {
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  font-size: 0.925rem;
+}
+
+.alerta--error {
+  color: var(--color-error);
+  background-color: #fdecea;
+  border: 1px solid #f5c2c0;
+}
+
+.alerta--exito {
+  color: var(--color-exito);
+  background-color: #e8f5e9;
+  border: 1px solid #b9dfbb;
+}
+
+.texto-secundario {
+  color: var(--color-texto-suave);
+  font-size: 0.925rem;
+}
+
 .estado-api {
   display: inline-block;
   padding: 0.5rem 0.875rem;

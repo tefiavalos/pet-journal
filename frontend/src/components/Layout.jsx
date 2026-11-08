@@ -1,4 +1,4 @@
-import { Link, Outlet } from 'react-router-dom';
+import { Link, NavLink, Outlet } from 'react-router-dom';
 
 function Layout() {
   return (
@@ -8,6 +8,13 @@ function Layout() {
           <Link to="/" className="encabezado__marca">
             🐾 Pet Journal
           </Link>
+
+          <nav className="navegacion">
+            <NavLink to="/login">Iniciar sesión</NavLink>
+            <NavLink to="/registro" className="boton boton--chico">
+              Crear cuenta
+            </NavLink>
+          </nav>
         </div>
       </header>
 
