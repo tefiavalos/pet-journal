@@ -33,6 +33,11 @@ El servidor queda escuchando en `http://localhost:3000` (o en el puerto definido
 | POST | `/api/auth/registro` | Crea una cuenta y devuelve el token | No |
 | POST | `/api/auth/login` | Inicia sesión y devuelve el token | No |
 | GET | `/api/auth/perfil` | Datos del usuario autenticado | Sí |
+| GET | `/api/mascotas` | Mascotas a las que tiene acceso el usuario | Sí |
+| POST | `/api/mascotas` | Crea una mascota (el usuario queda como responsable) | Sí |
+| GET | `/api/mascotas/:id` | Perfil de una mascota con sus responsables | Sí |
+| PUT | `/api/mascotas/:id` | Modifica una mascota | Sí |
+| DELETE | `/api/mascotas/:id` | Elimina una mascota | Sí |
 
 Los endpoints protegidos esperan el header `Authorization: Bearer <token>`. Los errores se devuelven siempre con el formato `{ "mensaje": "..." }`.
 
