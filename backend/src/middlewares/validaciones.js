@@ -40,6 +40,16 @@ export function validarLogin(req, res, next) {
   next();
 }
 
+export function validarCodigoInvitacion(req, res, next) {
+  const { codigoInvitacion } = req.body ?? {};
+
+  if (!textoValido(codigoInvitacion)) {
+    throw new ErrorApp(400, 'El código de invitación es obligatorio');
+  }
+
+  next();
+}
+
 // Los campos opcionales que llegan vacíos se convierten en null
 function vacio(valor) {
   return valor === undefined || valor === null || (typeof valor === 'string' && valor.trim() === '');

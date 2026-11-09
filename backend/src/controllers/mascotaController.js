@@ -20,6 +20,11 @@ export async function actualizar(req, res) {
   res.json(mascota);
 }
 
+export async function vincular(req, res) {
+  const mascota = await mascotaService.vincularPorCodigo(req.body.codigoInvitacion, req.usuarioId);
+  res.json(mascota);
+}
+
 export async function eliminar(req, res) {
   await mascotaService.eliminar(req.params.id, req.usuarioId);
   res.status(204).end();

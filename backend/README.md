@@ -38,6 +38,7 @@ El servidor queda escuchando en `http://localhost:3000` (o en el puerto definido
 | GET | `/api/mascotas/:id` | Perfil de una mascota con sus responsables | Sí |
 | PUT | `/api/mascotas/:id` | Modifica una mascota | Sí |
 | DELETE | `/api/mascotas/:id` | Elimina una mascota | Sí |
+| POST | `/api/mascotas/vincular` | Suma al usuario como responsable usando el `codigoInvitacion` | Sí |
 
 Los endpoints protegidos esperan el header `Authorization: Bearer <token>`. Los errores se devuelven siempre con el formato `{ "mensaje": "..." }`.
 

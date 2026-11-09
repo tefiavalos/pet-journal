@@ -88,6 +88,22 @@ export async function actualizar(mascotaId, datos, usuarioId) {
   return mascota;
 }
 
+// Asociación de responsables (RF04): un usuario se suma a una mascota con su código
+export async function vincularPorCodigo(codigoInvitacion, usuarioId) {
+  const mascota = await Mascota.findOne({ codigoInvitacion: codigoInvitacion.trim().toUpperCase() });
+  if (!mascota) {
+    throw new ErrorApp(404, 'No hay ninguna mascota con ese código');
+  }
+
+  if (esResponsable(mascota, usuarioId)) {
+    throw new ErrorApp(409, 'Ya sos responsable de esta mascota');
+  }
+
+  mascota.responsables.push({ usuarioId });
+  await mascota.save();
+  return mascota;
+}
+
 export async function eliminar(mascotaId, usuarioId) {
   const mascota = await verificarAcceso(mascotaId, usuarioId);
   await mascota.deleteOne();
