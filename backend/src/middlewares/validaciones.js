@@ -2,6 +2,7 @@ import { ErrorApp } from '../utils/ErrorApp.js';
 import { TIPOS_MASCOTA, SEXOS_MASCOTA } from '../models/Mascota.js';
 import { TIPOS_CONSULTA } from '../models/EventoVeterinario.js';
 import { parsearDia, hoy } from '../utils/fechas.js';
+import { CATEGORIAS_HISTORIAL } from '../utils/historial.js';
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const PASSWORD_MIN = 8;
@@ -137,5 +138,38 @@ export function validarEventoVeterinario(req, res, next) {
 
   responderSiHayErrores(errores);
   req.body = evento;
+  next();
+}
+
+// Filtros opcionales del historial: ?categoria=&tipo=&desde=AAAA-MM-DD&hasta=AAAA-MM-DD
+export function validarFiltrosHistorial(req, res, next) {
+  const { categoria, tipo, desde, hasta } = req.query;
+  const errores = [];
+  const filtros = {};
+
+  if (!vacio(categoria)) {
+    if (!CATEGORIAS_HISTORIAL.includes(categoria)) errores.push('La categoría no es válida');
+    else filtros.categoria = categoria;
+  }
+
+  if (!vacio(tipo)) {
+    if (!TIPOS_CONSULTA.includes(tipo)) errores.push('El tipo no es válido');
+    else filtros.tipo = tipo;
+  }
+
+  for (const [nombre, valor] of [['desde', desde], ['hasta', hasta]]) {
+    if (vacio(valor)) continue;
+    const fecha = parsearDia(valor);
+    if (!fecha) errores.push(`La fecha "${nombre}" no es válida`);
+    else filtros[nombre] = fecha;
+  }
+
+  if (filtros.desde && filtros.hasta && filtros.desde > filtros.hasta) {
+    errores.push('La fecha "desde" no puede ser posterior a "hasta"');
+  }
+
+  responderSiHayErrores(errores);
+  // req.query no se puede reemplazar en Express 5, por eso los filtros van en req.filtros
+  req.filtros = filtros;
   next();
 }

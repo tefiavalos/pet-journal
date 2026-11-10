@@ -10,6 +10,7 @@ import {
 import { requiereAutenticacion } from '../middlewares/auth.js';
 import { validarMascota, validarCodigoInvitacion } from '../middlewares/validaciones.js';
 import eventoVeterinarioRoutes from './eventoVeterinarioRoutes.js';
+import historialRoutes from './historialRoutes.js';
 
 const router = Router();
 
@@ -25,5 +26,6 @@ router.delete('/:id', eliminar);
 
 // Rutas de los registros de cada mascota
 router.use('/:mascotaId/eventos-veterinarios', eventoVeterinarioRoutes);
+router.use('/:mascotaId/historial', historialRoutes);
 
 export default router;
