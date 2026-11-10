@@ -1,5 +1,7 @@
 import { ErrorApp } from '../utils/ErrorApp.js';
 import { TIPOS_MASCOTA, SEXOS_MASCOTA } from '../models/Mascota.js';
+import { TIPOS_CONSULTA } from '../models/EventoVeterinario.js';
+import { parsearDia, hoy } from '../utils/fechas.js';
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const PASSWORD_MIN = 8;
@@ -104,5 +106,36 @@ export function validarMascota(req, res, next) {
 
   responderSiHayErrores(errores);
   req.body = mascota;
+  next();
+}
+
+export function validarEventoVeterinario(req, res, next) {
+  const datos = req.body ?? {};
+  const errores = [];
+
+  const evento = {
+    titulo: textoOpcional(datos.titulo),
+    tipoConsulta: textoOpcional(datos.tipoConsulta),
+    descripcion: textoOpcional(datos.descripcion),
+    fecha: parsearDia(hoy()),
+  };
+
+  if (!evento.titulo) errores.push('El título es obligatorio');
+  if (!TIPOS_CONSULTA.includes(evento.tipoConsulta)) errores.push('El tipo de consulta no es válido');
+
+  // La fecha es opcional: si no viene, se toma la de hoy
+  if (!vacio(datos.fecha)) {
+    const fecha = parsearDia(datos.fecha);
+    if (!fecha) {
+      errores.push('La fecha no es válida');
+    } else if (fecha > parsearDia(hoy())) {
+      errores.push('La fecha no puede ser futura: para eso están los eventos futuros');
+    } else {
+      evento.fecha = fecha;
+    }
+  }
+
+  responderSiHayErrores(errores);
+  req.body = evento;
   next();
 }

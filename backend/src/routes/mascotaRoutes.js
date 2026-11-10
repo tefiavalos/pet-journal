@@ -9,6 +9,7 @@ import {
 } from '../controllers/mascotaController.js';
 import { requiereAutenticacion } from '../middlewares/auth.js';
 import { validarMascota, validarCodigoInvitacion } from '../middlewares/validaciones.js';
+import eventoVeterinarioRoutes from './eventoVeterinarioRoutes.js';
 
 const router = Router();
 
@@ -21,5 +22,8 @@ router.post('/vincular', validarCodigoInvitacion, vincular);
 router.get('/:id', obtener);
 router.put('/:id', validarMascota, actualizar);
 router.delete('/:id', eliminar);
+
+// Rutas de los registros de cada mascota
+router.use('/:mascotaId/eventos-veterinarios', eventoVeterinarioRoutes);
 
 export default router;
