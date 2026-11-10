@@ -8,6 +8,7 @@ import Registro from '../pages/Registro.jsx';
 import MisMascotas from '../pages/MisMascotas.jsx';
 import NuevaMascota from '../pages/NuevaMascota.jsx';
 import EditarMascota from '../pages/EditarMascota.jsx';
+import PerfilMascota from '../pages/PerfilMascota.jsx';
 import NoEncontrada from '../pages/NoEncontrada.jsx';
 
 function AppRouter() {
@@ -24,6 +25,7 @@ function AppRouter() {
         <Route element={<RutaProtegida />}>
           <Route path="mascotas" element={<MisMascotas />} />
           <Route path="mascotas/nueva" element={<NuevaMascota />} />
+          <Route path="mascotas/:id" element={<PerfilMascota />} />
           <Route path="mascotas/:id/editar" element={<EditarMascota />} />
         </Route>
 

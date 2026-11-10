@@ -6,8 +6,8 @@ function NuevaMascota() {
   const navigate = useNavigate();
 
   async function handleGuardar(datos) {
-    await crearMascota(datos);
-    navigate('/mascotas');
+    const mascota = await crearMascota(datos);
+    navigate(`/mascotas/${mascota._id}`, { replace: true });
   }
 
   return (

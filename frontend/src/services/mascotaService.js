@@ -19,3 +19,7 @@ export async function actualizarMascota(id, datos) {
   const { data } = await api.put(`/mascotas/${id}`, datos);
   return data;
 }
+
+export async function eliminarMascota(id) {
+  await api.delete(`/mascotas/${id}`);
+}

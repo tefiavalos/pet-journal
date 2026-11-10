@@ -34,7 +34,7 @@ function EditarMascota() {
 
   async function handleGuardar(datos) {
     await actualizarMascota(id, datos);
-    navigate('/mascotas');
+    navigate(`/mascotas/${id}`, { replace: true });
   }
 
   return (
@@ -49,7 +49,7 @@ function EditarMascota() {
           valoresIniciales={valores}
           onGuardar={handleGuardar}
           textoBoton="Guardar cambios"
-          rutaCancelar="/mascotas"
+          rutaCancelar={`/mascotas/${id}`}
         />
       )}
     </section>
