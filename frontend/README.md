@@ -30,3 +30,17 @@ La aplicación queda disponible en `http://localhost:5173`. Para que funcione co
 | `src/context` | Estado global de la sesión del usuario |
 | `src/routes` | Configuración de React Router y rutas protegidas |
 | `src/styles` | Estilos CSS |
+| `src/utils` | Funciones auxiliares (formato de fechas, cálculo de edad) |
+
+## Pantallas
+
+| Ruta | Pantalla | Requiere sesión |
+|------|----------|-----------------|
+| `/` | Portada | No |
+| `/login` | Inicio de sesión | No |
+| `/registro` | Registro | No |
+| `/mascotas` | Listado de mis mascotas | Sí |
+| `/mascotas/nueva` | Alta de mascota | Sí |
+| `/mascotas/vincular` | Vinculación con código de invitación | Sí |
+| `/mascotas/:id` | Perfil de la mascota | Sí |
+| `/mascotas/:id/editar` | Edición de la mascota | Sí |

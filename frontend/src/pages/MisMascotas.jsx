@@ -29,6 +29,9 @@ function MisMascotas() {
         </div>
 
         <div className="acciones">
+          <Link to="/mascotas/vincular" className="boton boton--secundario">
+            Vincular con código
+          </Link>
           <Link to="/mascotas/nueva" className="boton">
             + Agregar mascota
           </Link>
@@ -42,7 +45,10 @@ function MisMascotas() {
       {!cargando && !error && mascotas.length === 0 && (
         <div className="tarjeta vacio">
           <p>Todavía no tenés mascotas cargadas.</p>
-          <Link to="/mascotas/nueva">Agregá la primera</Link>
+          <p>
+            <Link to="/mascotas/nueva">Agregá la primera</Link> o{' '}
+            <Link to="/mascotas/vincular">vinculate con un código</Link>.
+          </p>
         </div>
       )}
 

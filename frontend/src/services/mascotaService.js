@@ -20,6 +20,11 @@ export async function actualizarMascota(id, datos) {
   return data;
 }
 
+export async function vincularMascota(codigoInvitacion) {
+  const { data } = await api.post('/mascotas/vincular', { codigoInvitacion });
+  return data;
+}
+
 export async function eliminarMascota(id) {
   await api.delete(`/mascotas/${id}`);
 }
