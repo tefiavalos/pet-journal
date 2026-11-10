@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useOutletContext } from 'react-router-dom';
+import { Link, useOutletContext } from 'react-router-dom';
 import Alerta from '../components/Alerta.jsx';
 import { obtenerHistorial } from '../services/historialService.js';
 import { obtenerMensajeError } from '../services/api.js';
@@ -55,6 +55,9 @@ function HistorialMascota() {
     <div className="seccion-mascota">
       <div className="encabezado-pagina">
         <h2>Historial</h2>
+        <Link to={`/mascotas/${mascota._id}/historial/nuevo`} className="boton">
+          + Registrar evento veterinario
+        </Link>
       </div>
 
       <div className="filtros tarjeta">
