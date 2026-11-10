@@ -1,27 +1,20 @@
-import { useEffect, useState } from 'react';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { useState } from 'react';
+import { Link, useNavigate, useOutletContext } from 'react-router-dom';
 import Alerta from '../components/Alerta.jsx';
-import { obtenerMascota, eliminarMascota } from '../services/mascotaService.js';
+import { eliminarMascota } from '../services/mascotaService.js';
 import { obtenerMensajeError } from '../services/api.js';
-import { calcularEdad, formatearFecha, iconoTipo } from '../utils/mascotas.js';
+import { calcularEdad, formatearFecha } from '../utils/mascotas.js';
 
 const TEXTO_TIPO = { perro: 'Perro', gato: 'Gato', otro: 'Otro' };
 const TEXTO_SEXO = { hembra: 'Hembra', macho: 'Macho' };
 
 function PerfilMascota() {
-  const { id } = useParams();
+  const { mascota } = useOutletContext();
   const navigate = useNavigate();
 
-  const [mascota, setMascota] = useState(null);
   const [error, setError] = useState('');
   const [copiado, setCopiado] = useState(false);
   const [eliminando, setEliminando] = useState(false);
-
-  useEffect(() => {
-    obtenerMascota(id)
-      .then(setMascota)
-      .catch((err) => setError(obtenerMensajeError(err)));
-  }, [id]);
 
   async function handleCopiarCodigo() {
     try {
@@ -35,28 +28,18 @@ function PerfilMascota() {
 
   async function handleEliminar() {
     const confirmar = window.confirm(
-      `¿Seguro que querés eliminar a ${mascota.nombre}? Se borra para todos sus responsables.`,
+      `¿Seguro que querés eliminar a ${mascota.nombre}? Se borra para todos sus responsables, junto con su historial.`,
     );
     if (!confirmar) return;
 
     setEliminando(true);
     try {
-      await eliminarMascota(id);
+      await eliminarMascota(mascota._id);
       navigate('/mascotas', { replace: true });
     } catch (err) {
       setError(obtenerMensajeError(err));
       setEliminando(false);
     }
-  }
-
-  if (!mascota) {
-    return (
-      <section>
-        <Alerta>{error}</Alerta>
-        {!error && <p className="texto-secundario">Cargando...</p>}
-        <Link to="/mascotas">Volver a mis mascotas</Link>
-      </section>
-    );
   }
 
   const datos = [
@@ -65,39 +48,29 @@ function PerfilMascota() {
     { etiqueta: 'Sexo', valor: TEXTO_SEXO[mascota.sexo] },
     {
       etiqueta: 'Nacimiento',
-      valor: mascota.fechaNacimiento &&
+      valor:
+        mascota.fechaNacimiento &&
         `${formatearFecha(mascota.fechaNacimiento)} (${calcularEdad(mascota.fechaNacimiento)})`,
     },
     { etiqueta: 'Peso', valor: mascota.peso != null && `${mascota.peso} kg` },
   ];
 
   return (
-    <section className="perfil">
-      <Link to="/mascotas">← Mis mascotas</Link>
-
+    <>
       <Alerta>{error}</Alerta>
 
-      <div className="perfil__cabecera">
-        <div className="perfil__foto">
-          {mascota.foto ? <img src={mascota.foto} alt={mascota.nombre} /> : <span>{iconoTipo(mascota.tipo)}</span>}
-        </div>
-
-        <div>
-          <h1>{mascota.nombre}</h1>
-          <div className="acciones">
-            <Link to={`/mascotas/${id}/editar`} className="boton boton--chico">
-              Editar
-            </Link>
-            <button
-              type="button"
-              className="boton boton--chico boton--peligro"
-              onClick={handleEliminar}
-              disabled={eliminando}
-            >
-              {eliminando ? 'Eliminando...' : 'Eliminar'}
-            </button>
-          </div>
-        </div>
+      <div className="acciones">
+        <Link to={`/mascotas/${mascota._id}/editar`} className="boton boton--chico">
+          Editar
+        </Link>
+        <button
+          type="button"
+          className="boton boton--chico boton--peligro"
+          onClick={handleEliminar}
+          disabled={eliminando}
+        >
+          {eliminando ? 'Eliminando...' : 'Eliminar'}
+        </button>
       </div>
 
       <div className="perfil__grilla">
@@ -140,7 +113,7 @@ function PerfilMascota() {
           </div>
         </article>
       </div>
-    </section>
+    </>
   );
 }
 
