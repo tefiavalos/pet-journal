@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext.jsx';
 import { listarMascotas } from '../services/mascotaService.js';
 import { obtenerMensajeError } from '../services/api.js';
@@ -26,6 +27,12 @@ function MisMascotas() {
           <h1>Mis mascotas</h1>
           <p className="texto-secundario">Hola, {usuario.nombre}.</p>
         </div>
+
+        <div className="acciones">
+          <Link to="/mascotas/nueva" className="boton">
+            + Agregar mascota
+          </Link>
+        </div>
       </div>
 
       <Alerta>{error}</Alerta>
@@ -35,6 +42,7 @@ function MisMascotas() {
       {!cargando && !error && mascotas.length === 0 && (
         <div className="tarjeta vacio">
           <p>Todavía no tenés mascotas cargadas.</p>
+          <Link to="/mascotas/nueva">Agregá la primera</Link>
         </div>
       )}
 
