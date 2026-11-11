@@ -1,6 +1,7 @@
 import { ErrorApp } from '../utils/ErrorApp.js';
 import { TIPOS_MASCOTA, SEXOS_MASCOTA } from '../models/Mascota.js';
 import { TIPOS_CONSULTA } from '../models/EventoVeterinario.js';
+import { TIPOS_TAREA } from '../models/TareaDiaria.js';
 import { parsearDia, hoy } from '../utils/fechas.js';
 import { CATEGORIAS_HISTORIAL } from '../utils/historial.js';
 
@@ -153,7 +154,7 @@ export function validarFiltrosHistorial(req, res, next) {
   }
 
   if (!vacio(tipo)) {
-    if (!TIPOS_CONSULTA.includes(tipo)) errores.push('El tipo no es válido');
+    if (![...TIPOS_TAREA, ...TIPOS_CONSULTA].includes(tipo)) errores.push('El tipo no es válido');
     else filtros.tipo = tipo;
   }
 

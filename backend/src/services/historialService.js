@@ -1,7 +1,8 @@
 import EventoVeterinario, { TIPOS_CONSULTA } from '../models/EventoVeterinario.js';
+import TareaDiaria, { TIPOS_TAREA } from '../models/TareaDiaria.js';
 import { verificarAcceso } from './mascotaService.js';
 import { sumarDias } from '../utils/fechas.js';
-import { entradaDeEventoVeterinario, ordenarHistorial } from '../utils/historial.js';
+import { entradaDeEventoVeterinario, entradaDeTarea, ordenarHistorial } from '../utils/historial.js';
 
 function rangoDeFechas({ desde, hasta }) {
   if (!desde && !hasta) return undefined;
@@ -21,6 +22,19 @@ export async function obtenerHistorial(mascotaId, usuarioId, filtros) {
   const fecha = rangoDeFechas(filtros);
   const entradas = [];
 
+  // Información cotidiana: las tareas diarias marcadas como HECHO
+  const incluirCotidiano = categoria !== 'veterinario' && (!tipo || TIPOS_TAREA.includes(tipo));
+  if (incluirCotidiano) {
+    const tareas = await TareaDiaria.find({
+      mascotaId,
+      estado: 'HECHO',
+      ...(tipo && { tipo }),
+      ...(fecha && { fecha }),
+    }).populate('realizadaPor', 'nombre');
+    entradas.push(...tareas.map(entradaDeTarea));
+  }
+
+  // Información veterinaria
   const incluirVeterinario = categoria !== 'cotidiano' && (!tipo || TIPOS_CONSULTA.includes(tipo));
   if (incluirVeterinario) {
     const eventos = await EventoVeterinario.find({
