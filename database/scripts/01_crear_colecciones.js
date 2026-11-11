@@ -60,7 +60,30 @@ db.createCollection("tareasDiarias", {
         tipo: { enum: ["ALIMENTACION", "MEDICACION", "PASEO"] },
         fecha: { bsonType: "date" },
         hora: { bsonType: "string", pattern: "^([01][0-9]|2[0-3]):[0-5][0-9]$" },
-        estado: { enum: ["PENDIENTE", "HECHO"] }
+        estado: { enum: ["PENDIENTE", "HECHO"] },
+        actividadId: { bsonType: "objectId", description: "Actividad recurrente que generó la tarea" },
+        descripcion: { bsonType: "string" },
+        realizadaPor: { bsonType: "objectId", description: "Usuario que la marcó como HECHO" },
+        realizadaEn: { bsonType: "date" }
+      }
+    }
+  }
+});
+
+// Actividades que se repiten todos los días (por ejemplo, comida a las 08:00).
+// A partir de ellas se generan las tareas diarias.
+db.createCollection("actividadesRecurrentes", {
+  validator: {
+    $jsonSchema: {
+      bsonType: "object",
+      required: ["mascotaId", "tipo", "hora", "desde", "activa"],
+      properties: {
+        mascotaId: { bsonType: "objectId" },
+        tipo: { enum: ["ALIMENTACION", "MEDICACION", "PASEO"] },
+        hora: { bsonType: "string", pattern: "^([01][0-9]|2[0-3]):[0-5][0-9]$" },
+        descripcion: { bsonType: "string" },
+        desde: { bsonType: "date", description: "Primer día en que se generan tareas" },
+        activa: { bsonType: "bool" }
       }
     }
   }

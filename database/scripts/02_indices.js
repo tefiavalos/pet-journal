@@ -13,6 +13,15 @@ db.mascotas.createIndex({ codigoInvitacion: 1 }, { unique: true });
 // Tareas del día de una mascota (RF08)
 db.tareasDiarias.createIndex({ mascotaId: 1, fecha: 1 });
 
+// Una sola tarea por actividad y por día
+db.tareasDiarias.createIndex(
+  { actividadId: 1, fecha: 1 },
+  { unique: true, partialFilterExpression: { actividadId: { $exists: true } } }
+);
+
+// Actividades activas de una mascota
+db.actividadesRecurrentes.createIndex({ mascotaId: 1, activa: 1 });
+
 // Historial veterinario ordenado del más reciente al más antiguo (RF06)
 db.eventosVeterinarios.createIndex({ mascotaId: 1, fecha: -1 });
 
