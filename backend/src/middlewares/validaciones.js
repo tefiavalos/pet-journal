@@ -1,7 +1,7 @@
 import { ErrorApp } from '../utils/ErrorApp.js';
 import { TIPOS_MASCOTA, SEXOS_MASCOTA } from '../models/Mascota.js';
 import { TIPOS_CONSULTA } from '../models/EventoVeterinario.js';
-import { TIPOS_TAREA } from '../models/TareaDiaria.js';
+import { TIPOS_TAREA, ESTADOS_TAREA, HORA_REGEX } from '../models/TareaDiaria.js';
 import { parsearDia, hoy } from '../utils/fechas.js';
 import { CATEGORIAS_HISTORIAL } from '../utils/historial.js';
 
@@ -172,5 +172,58 @@ export function validarFiltrosHistorial(req, res, next) {
   responderSiHayErrores(errores);
   // req.query no se puede reemplazar en Express 5, por eso los filtros van en req.filtros
   req.filtros = filtros;
+  next();
+}
+
+export function validarActividad(req, res, next) {
+  const datos = req.body ?? {};
+  const errores = [];
+
+  const actividad = {
+    tipo: textoOpcional(datos.tipo),
+    hora: textoOpcional(datos.hora),
+    descripcion: textoOpcional(datos.descripcion),
+  };
+
+  if (!TIPOS_TAREA.includes(actividad.tipo)) errores.push('El tipo de actividad no es válido');
+  if (!HORA_REGEX.test(actividad.hora ?? '')) errores.push('La hora tiene que tener el formato HH:MM');
+
+  if (datos.activa !== undefined) {
+    if (typeof datos.activa !== 'boolean') errores.push('El campo activa tiene que ser true o false');
+    else actividad.activa = datos.activa;
+  }
+
+  // Primer día en que se generan tareas (el frontend manda su fecha local)
+  if (!vacio(datos.desde)) {
+    const desde = parsearDia(datos.desde);
+    if (!desde) errores.push('La fecha "desde" no es válida');
+    else actividad.desde = desde;
+  }
+
+  responderSiHayErrores(errores);
+  req.body = actividad;
+  next();
+}
+
+export function validarEstadoTarea(req, res, next) {
+  const { estado } = req.body ?? {};
+
+  if (!ESTADOS_TAREA.includes(estado)) {
+    throw new ErrorApp(400, 'El estado tiene que ser PENDIENTE o HECHO');
+  }
+
+  next();
+}
+
+// ?fecha=AAAA-MM-DD (si no viene, se usa la fecha de hoy)
+export function validarFechaConsulta(req, res, next) {
+  const texto = vacio(req.query.fecha) ? hoy() : req.query.fecha;
+  const fecha = parsearDia(texto);
+
+  if (!fecha) {
+    throw new ErrorApp(400, 'La fecha tiene que tener el formato AAAA-MM-DD');
+  }
+
+  req.fecha = fecha;
   next();
 }

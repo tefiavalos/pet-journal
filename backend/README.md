@@ -41,6 +41,13 @@ El servidor queda escuchando en `http://localhost:3000` (o en el puerto definido
 | POST | `/api/mascotas/vincular` | Suma al usuario como responsable usando el `codigoInvitacion` | Sí |
 | GET | `/api/mascotas/:mascotaId/eventos-veterinarios` | Consultas, vacunas, estudios y diagnósticos de la mascota | Sí |
 | POST | `/api/mascotas/:mascotaId/eventos-veterinarios` | Registra un evento veterinario (la fecha es opcional, por defecto hoy) | Sí |
+| GET | `/api/mascotas/:mascotaId/actividades` | Actividades recurrentes de la mascota | Sí |
+| POST | `/api/mascotas/:mascotaId/actividades` | Crea una actividad (`tipo`, `hora`, `descripcion`, `desde`) | Sí |
+| PUT | `/api/actividades/:id` | Modifica o desactiva una actividad (`activa: false`) | Sí |
+| DELETE | `/api/actividades/:id` | Elimina una actividad (las tareas ya hechas quedan en el historial) | Sí |
+| GET | `/api/mascotas/:mascotaId/tareas?fecha=AAAA-MM-DD` | Tareas del día de la mascota (se generan a partir de las actividades) | Sí |
+| GET | `/api/tareas?fecha=AAAA-MM-DD` | Tareas del día de todas las mascotas del usuario | Sí |
+| PATCH | `/api/tareas/:id/estado` | Cambia el estado a `PENDIENTE` o `HECHO` | Sí |
 | GET | `/api/mascotas/:mascotaId/historial` | Historial cronológico. Filtros opcionales: `categoria` (`cotidiano` o `veterinario`), `tipo`, `desde` y `hasta` (`AAAA-MM-DD`) | Sí |
 
 Los endpoints protegidos esperan el header `Authorization: Bearer <token>`. Los errores se devuelven siempre con el formato `{ "mensaje": "..." }`.
