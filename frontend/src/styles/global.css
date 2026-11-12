@@ -422,6 +422,28 @@ a {
   border-left-color: var(--color-primario);
 }
 
+.registro--inactivo {
+  opacity: 0.6;
+}
+
+.registro .acciones {
+  align-self: center;
+}
+
+.formulario--en-linea {
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: flex-end;
+}
+
+.formulario--en-linea .campo {
+  flex: 1 1 140px;
+}
+
+.formulario--en-linea .campo--ancho {
+  flex: 3 1 240px;
+}
+
 .registro__icono {
   font-size: 1.5rem;
 }

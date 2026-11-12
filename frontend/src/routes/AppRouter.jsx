@@ -12,6 +12,7 @@ import LayoutMascota from '../components/LayoutMascota.jsx';
 import PerfilMascota from '../pages/PerfilMascota.jsx';
 import HistorialMascota from '../pages/HistorialMascota.jsx';
 import NuevoEventoVeterinario from '../pages/NuevoEventoVeterinario.jsx';
+import ActividadesMascota from '../pages/ActividadesMascota.jsx';
 import VincularMascota from '../pages/VincularMascota.jsx';
 import NoEncontrada from '../pages/NoEncontrada.jsx';
 
@@ -32,6 +33,7 @@ function AppRouter() {
           <Route path="mascotas/vincular" element={<VincularMascota />} />
           <Route path="mascotas/:id" element={<LayoutMascota />}>
             <Route index element={<PerfilMascota />} />
+            <Route path="actividades" element={<ActividadesMascota />} />
             <Route path="historial" element={<HistorialMascota />} />
             <Route path="historial/nuevo" element={<NuevoEventoVeterinario />} />
           </Route>

@@ -3,13 +3,14 @@ import { NavLink } from 'react-router-dom';
 function MenuMascota({ mascotaId }) {
   const secciones = [
     { ruta: '', texto: 'Perfil' },
+    { ruta: 'actividades', texto: 'Actividades' },
     { ruta: 'historial', texto: 'Historial' },
   ];
 
   return (
     <nav className="menu-mascota">
       {secciones.map(({ ruta, texto }) => (
-        <NavLink key={texto} to={`/mascotas/${mascotaId}${ruta && `/${ruta}`}`} end>
+        <NavLink key={texto} to={`/mascotas/${mascotaId}${ruta && `/${ruta}`}`} end={ruta === ''}>
           {texto}
         </NavLink>
       ))}
