@@ -26,7 +26,7 @@ El servidor queda escuchando en `http://localhost:3000` (o en el puerto definido
 |----------|-------------|
 | `PORT` | Puerto del servidor |
 | `MONGODB_URI` | Cadena de conexión a MongoDB |
-| `CORS_ORIGIN` | URL del frontend que puede consumir la API |
+| `CORS_ORIGIN` | URL del frontend que puede consumir la API. Pueden ser varias separadas por coma |
 | `JWT_SECRET` | Clave para firmar los tokens (obligatoria) |
 | `JWT_EXPIRES_IN` | Duración del token (por ejemplo `7d`) |
 
@@ -74,3 +74,21 @@ Los endpoints protegidos esperan el header `Authorization: Bearer <token>`. Los 
 | `src/models` | Infraestructura | Modelos Mongoose de cada colección |
 | `src/config` | Infraestructura | Conexión a MongoDB y variables de entorno |
 | `src/utils` | — | Funciones auxiliares (tokens JWT, errores con código HTTP) |
+
+## Despliegue
+
+El backend se puede publicar en [Render](https://render.com) y la base en [MongoDB Atlas](https://www.mongodb.com/atlas).
+
+1. En Atlas, crear un cluster gratuito, un usuario de base de datos y permitir el acceso desde cualquier IP (`0.0.0.0/0`). Copiar la cadena de conexión.
+2. Correr los scripts de `/database` contra esa base (cambiando la URL del comando de `mongosh` por la de Atlas).
+3. En Render, crear un **Web Service** conectado al repositorio con esta configuración:
+
+   | Opción | Valor |
+   |--------|-------|
+   | Root Directory | `backend` |
+   | Build Command | `npm install` |
+   | Start Command | `npm start` |
+   | Health Check Path | `/api/health` |
+
+4. Cargar las variables de entorno: `MONGODB_URI` (la de Atlas), `JWT_SECRET` (una clave larga nueva, distinta a la de desarrollo), `JWT_EXPIRES_IN` y `CORS_ORIGIN` con la URL del frontend publicado. Render define `PORT` solo.
+5. Cuando termine el deploy, `https://<nombre-del-servicio>.onrender.com/api/health` tiene que responder `{"estado":"ok","baseDeDatos":"conectada"}`.
