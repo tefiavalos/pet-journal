@@ -1,9 +1,17 @@
-import { Link, NavLink, Outlet, useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { Link, NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext.jsx';
 
 function Layout() {
   const { usuario, estaAutenticado, cerrarSesion } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
+  // En pantallas chicas el menú se abre y cierra con un botón
+  const [menuAbierto, setMenuAbierto] = useState(false);
+
+  useEffect(() => {
+    setMenuAbierto(false);
+  }, [location.pathname]);
 
   function handleCerrarSesion() {
     cerrarSesion();
@@ -18,8 +26,18 @@ function Layout() {
             🐾 Pet Journal
           </Link>
 
+          <button
+            type="button"
+            className="encabezado__menu"
+            onClick={() => setMenuAbierto(!menuAbierto)}
+            aria-expanded={menuAbierto}
+            aria-label="Abrir menú"
+          >
+            {menuAbierto ? '✕' : '☰'}
+          </button>
+
           {estaAutenticado ? (
-            <nav className="navegacion">
+            <nav className={`navegacion ${menuAbierto ? 'navegacion--abierta' : ''}`}>
               <NavLink to="/hoy">Hoy</NavLink>
               <NavLink to="/mascotas">Mis mascotas</NavLink>
               <span className="navegacion__usuario">{usuario.nombre}</span>
@@ -28,7 +46,7 @@ function Layout() {
               </button>
             </nav>
           ) : (
-            <nav className="navegacion">
+            <nav className={`navegacion ${menuAbierto ? 'navegacion--abierta' : ''}`}>
               <NavLink to="/login">Iniciar sesión</NavLink>
               <NavLink to="/registro" className="boton boton--chico">
                 Crear cuenta
