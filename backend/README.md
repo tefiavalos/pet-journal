@@ -48,6 +48,12 @@ El servidor queda escuchando en `http://localhost:3000` (o en el puerto definido
 | GET | `/api/mascotas/:mascotaId/tareas?fecha=AAAA-MM-DD` | Tareas del día de la mascota (se generan a partir de las actividades) | Sí |
 | GET | `/api/tareas?fecha=AAAA-MM-DD` | Tareas del día de todas las mascotas del usuario | Sí |
 | PATCH | `/api/tareas/:id/estado` | Cambia el estado a `PENDIENTE` o `HECHO` | Sí |
+| GET | `/api/mascotas/:mascotaId/eventos-futuros` | Turnos y controles de la mascota (filtro opcional `estado`) | Sí |
+| POST | `/api/mascotas/:mascotaId/eventos-futuros` | Crea un evento futuro (`fecha` con hora, `titulo`, `tipoConsulta`, `descripcion`) | Sí |
+| PUT | `/api/eventos-futuros/:id` | Reprograma o modifica un evento pendiente | Sí |
+| PATCH | `/api/eventos-futuros/:id/cancelar` | Cancela un evento pendiente | Sí |
+| PATCH | `/api/eventos-futuros/:id/realizar` | Lo marca como realizado y lo pasa al historial veterinario | Sí |
+| GET | `/api/avisos` | Turnos pendientes de los próximos 7 días (y los que ya pasaron sin marcarse) | Sí |
 | GET | `/api/mascotas/:mascotaId/historial` | Historial cronológico. Filtros opcionales: `categoria` (`cotidiano` o `veterinario`), `tipo`, `desde` y `hasta` (`AAAA-MM-DD`) | Sí |
 
 Los endpoints protegidos esperan el header `Authorization: Bearer <token>`. Los errores se devuelven siempre con el formato `{ "mensaje": "..." }`.

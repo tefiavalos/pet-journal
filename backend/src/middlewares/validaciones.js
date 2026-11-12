@@ -2,6 +2,7 @@ import { ErrorApp } from '../utils/ErrorApp.js';
 import { TIPOS_MASCOTA, SEXOS_MASCOTA } from '../models/Mascota.js';
 import { TIPOS_CONSULTA } from '../models/EventoVeterinario.js';
 import { TIPOS_TAREA, ESTADOS_TAREA, HORA_REGEX } from '../models/TareaDiaria.js';
+import { ESTADOS_EVENTO_FUTURO } from '../models/EventoFuturo.js';
 import { parsearDia, hoy } from '../utils/fechas.js';
 import { CATEGORIAS_HISTORIAL } from '../utils/historial.js';
 
@@ -225,5 +226,61 @@ export function validarFechaConsulta(req, res, next) {
   }
 
   req.fecha = fecha;
+  next();
+}
+
+// La fecha llega con hora, en formato ISO (por ejemplo 2026-11-20T15:30:00.000Z)
+export function validarEventoFuturo(req, res, next) {
+  const datos = req.body ?? {};
+  const errores = [];
+
+  const evento = {
+    titulo: textoOpcional(datos.titulo),
+    tipoConsulta: textoOpcional(datos.tipoConsulta),
+    descripcion: textoOpcional(datos.descripcion),
+    fecha: null,
+  };
+
+  if (!evento.titulo) errores.push('El título es obligatorio');
+  if (!TIPOS_CONSULTA.includes(evento.tipoConsulta)) errores.push('El tipo de consulta no es válido');
+
+  const fecha = vacio(datos.fecha) ? null : new Date(datos.fecha);
+  if (!fecha || Number.isNaN(fecha.getTime())) {
+    errores.push('La fecha y hora del evento son obligatorias');
+  } else if (fecha <= new Date()) {
+    errores.push('La fecha del evento tiene que ser futura');
+  } else {
+    evento.fecha = fecha;
+  }
+
+  responderSiHayErrores(errores);
+  req.body = evento;
+  next();
+}
+
+// Al marcar un turno como realizado se puede indicar el día y lo que se habló
+export function validarRealizacion(req, res, next) {
+  const datos = req.body ?? {};
+  const realizacion = { fecha: null, descripcion: textoOpcional(datos.descripcion) };
+
+  if (!vacio(datos.fecha)) {
+    realizacion.fecha = parsearDia(datos.fecha);
+    if (!realizacion.fecha) {
+      throw new ErrorApp(400, 'La fecha no es válida');
+    }
+  }
+
+  req.body = realizacion;
+  next();
+}
+
+export function validarFiltroEstadoEvento(req, res, next) {
+  const { estado } = req.query;
+
+  if (!vacio(estado) && !ESTADOS_EVENTO_FUTURO.includes(estado)) {
+    throw new ErrorApp(400, 'El estado no es válido');
+  }
+
+  req.estado = vacio(estado) ? null : estado;
   next();
 }

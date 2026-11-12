@@ -1,8 +1,9 @@
 import mongoose from 'mongoose';
 import EventoFuturo from '../models/EventoFuturo.js';
-import { verificarAcceso } from './mascotaService.js';
+import { verificarAcceso, listarPorUsuario } from './mascotaService.js';
 import { registrar as registrarEventoVeterinario } from './eventoVeterinarioService.js';
 import { ErrorApp } from '../utils/ErrorApp.js';
+import { limiteDeAvisos } from '../utils/avisos.js';
 
 const CAMPOS_EDITABLES = ['fecha', 'titulo', 'tipoConsulta', 'descripcion'];
 
@@ -82,4 +83,19 @@ export async function marcarRealizado(eventoId, { fecha, descripcion }, usuarioI
   await evento.save();
 
   return { eventoFuturo: evento, eventoVeterinario };
+}
+
+// RF12: los avisos no son una colección propia, se calculan en el momento
+export async function obtenerAvisos(usuarioId) {
+  const mascotas = await listarPorUsuario(usuarioId);
+  const mascotaIds = mascotas.map((mascota) => mascota._id);
+  if (mascotaIds.length === 0) return [];
+
+  return EventoFuturo.find({
+    mascotaId: { $in: mascotaIds },
+    estado: 'PENDIENTE',
+    fecha: { $lte: limiteDeAvisos(new Date()) },
+  })
+    .sort({ fecha: 1 })
+    .populate('mascotaId', 'nombre');
 }

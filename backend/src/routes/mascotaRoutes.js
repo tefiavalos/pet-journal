@@ -13,6 +13,7 @@ import eventoVeterinarioRoutes from './eventoVeterinarioRoutes.js';
 import historialRoutes from './historialRoutes.js';
 import { actividadesDeMascota } from './actividadRoutes.js';
 import { tareasDeMascota } from './tareaRoutes.js';
+import { eventosFuturosDeMascota } from './eventoFuturoRoutes.js';
 
 const router = Router();
 
@@ -31,5 +32,6 @@ router.use('/:mascotaId/eventos-veterinarios', eventoVeterinarioRoutes);
 router.use('/:mascotaId/historial', historialRoutes);
 router.use('/:mascotaId/actividades', actividadesDeMascota);
 router.use('/:mascotaId/tareas', tareasDeMascota);
+router.use('/:mascotaId/eventos-futuros', eventosFuturosDeMascota);
 
 export default router;
