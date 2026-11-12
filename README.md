@@ -731,3 +731,30 @@ También le planteamos la duda sobre separar eventosVeterinarios y eventosFuturo
 ## 6. Conclusión
 
 Consideramos que este esquema de base de datos y la definición de los módulos nos dan una base clara para empezar la implementación. Las decisiones de diseño tomadas — cómo modelar la relación entre usuarios y mascotas, y cómo dividir el sistema en capas — buscan mantener el proyecto simple de entender y de extender a medida que avancemos con las siguientes etapas.
+
+# Ejecución del proyecto
+
+## Requisitos
+
+- Node.js 20 o superior.
+- MongoDB local o una base en MongoDB Atlas.
+
+## Pasos
+
+1. Crear la base con los scripts de [`database/`](database/README.md).
+2. Levantar el backend: ver [`backend/README.md`](backend/README.md).
+3. Levantar el frontend: ver [`frontend/README.md`](frontend/README.md).
+4. Entrar a `http://localhost:5173`.
+
+## Pruebas
+
+- Backend: `npm test` dentro de `backend` corre las pruebas unitarias, y `backend/tests/pet-journal.postman_collection.json` tiene las pruebas de los endpoints.
+- Funcionalidades: [`docs/pruebas-funcionales.md`](docs/pruebas-funcionales.md).
+
+## Despliegue
+
+| Parte | Servicio | Detalle |
+|-------|----------|---------|
+| Base de datos | MongoDB Atlas | [`backend/README.md`](backend/README.md#despliegue) |
+| Backend | Render | [`backend/README.md`](backend/README.md#despliegue) |
+| Frontend | Vercel | [`frontend/README.md`](frontend/README.md#despliegue) |
