@@ -5,6 +5,7 @@ import RutaPublica from './RutaPublica.jsx';
 import Inicio from '../pages/Inicio.jsx';
 import Login from '../pages/Login.jsx';
 import Registro from '../pages/Registro.jsx';
+import Hoy from '../pages/Hoy.jsx';
 import MisMascotas from '../pages/MisMascotas.jsx';
 import NuevaMascota from '../pages/NuevaMascota.jsx';
 import EditarMascota from '../pages/EditarMascota.jsx';
@@ -32,6 +33,7 @@ function AppRouter() {
         </Route>
 
         <Route element={<RutaProtegida />}>
+          <Route path="hoy" element={<Hoy />} />
           <Route path="mascotas" element={<MisMascotas />} />
           <Route path="mascotas/nueva" element={<NuevaMascota />} />
           <Route path="mascotas/vincular" element={<VincularMascota />} />

@@ -9,7 +9,7 @@ function Login() {
   const navigate = useNavigate();
   const location = useLocation();
   // Si llegó desde una ruta protegida, después del login vuelve ahí
-  const destino = location.state?.desde?.pathname || '/mascotas';
+  const destino = location.state?.desde?.pathname || '/hoy';
 
   const [form, setForm] = useState({ email: '', password: '' });
   const [error, setError] = useState('');

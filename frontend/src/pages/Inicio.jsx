@@ -6,7 +6,7 @@ function Inicio() {
   const { estaAutenticado, cargando } = useAuth();
 
   if (!cargando && estaAutenticado) {
-    return <Navigate to="/mascotas" replace />;
+    return <Navigate to="/hoy" replace />;
   }
 
   return (

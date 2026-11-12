@@ -584,6 +584,27 @@ a {
   font-size: 1.25rem;
 }
 
+/* Dashboard */
+
+.primera-mayuscula::first-letter {
+  text-transform: uppercase;
+}
+
+.tablero {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 1rem;
+}
+
+.tablero__mascota h3 {
+  margin: 0 0 0.75rem;
+}
+
+.tablero__mascota h3 a {
+  color: var(--color-texto);
+  text-decoration: none;
+}
+
 /* Perfil de mascota */
 
 .perfil {

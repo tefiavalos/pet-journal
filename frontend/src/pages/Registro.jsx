@@ -52,7 +52,7 @@ function Registro() {
         celular: form.celular.trim() || undefined,
         password: form.password,
       });
-      navigate('/mascotas', { replace: true });
+      navigate('/hoy', { replace: true });
     } catch (err) {
       setError(obtenerMensajeError(err));
     } finally {

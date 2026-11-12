@@ -10,7 +10,7 @@ function RutaPublica() {
   }
 
   if (estaAutenticado) {
-    return <Navigate to="/mascotas" replace />;
+    return <Navigate to="/hoy" replace />;
   }
 
   return <Outlet />;

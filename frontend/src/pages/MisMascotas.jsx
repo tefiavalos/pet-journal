@@ -5,7 +5,6 @@ import { listarMascotas } from '../services/mascotaService.js';
 import { obtenerMensajeError } from '../services/api.js';
 import TarjetaMascota from '../components/TarjetaMascota.jsx';
 import Alerta from '../components/Alerta.jsx';
-import Avisos from '../components/Avisos.jsx';
 
 function MisMascotas() {
   const { usuario } = useAuth();
@@ -38,8 +37,6 @@ function MisMascotas() {
           </Link>
         </div>
       </div>
-
-      <Avisos />
 
       <Alerta>{error}</Alerta>
 
