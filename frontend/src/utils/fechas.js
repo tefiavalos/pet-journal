@@ -29,3 +29,14 @@ export function formatearDiaLargo(textoDia) {
 export function formatearHora(fechaIso) {
   return new Date(fechaIso).toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit' });
 }
+
+// Hora local de una fecha en formato HH:MM (el que usan los inputs de tipo time)
+export function aTextoHora(fecha) {
+  return `${String(fecha.getHours()).padStart(2, '0')}:${String(fecha.getMinutes()).padStart(2, '0')}`;
+}
+
+// Fecha y hora locales completas, por ejemplo "20/11/2026 15:30"
+export function formatearFechaHora(fechaIso) {
+  const fecha = new Date(fechaIso);
+  return `${fecha.toLocaleDateString('es-AR')} ${aTextoHora(fecha)}`;
+}

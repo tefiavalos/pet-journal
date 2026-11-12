@@ -14,6 +14,9 @@ import HistorialMascota from '../pages/HistorialMascota.jsx';
 import NuevoEventoVeterinario from '../pages/NuevoEventoVeterinario.jsx';
 import ActividadesMascota from '../pages/ActividadesMascota.jsx';
 import TareasMascota from '../pages/TareasMascota.jsx';
+import EventosMascota from '../pages/EventosMascota.jsx';
+import NuevoEventoFuturo from '../pages/NuevoEventoFuturo.jsx';
+import EditarEventoFuturo from '../pages/EditarEventoFuturo.jsx';
 import VincularMascota from '../pages/VincularMascota.jsx';
 import NoEncontrada from '../pages/NoEncontrada.jsx';
 
@@ -38,6 +41,9 @@ function AppRouter() {
             <Route path="actividades" element={<ActividadesMascota />} />
             <Route path="historial" element={<HistorialMascota />} />
             <Route path="historial/nuevo" element={<NuevoEventoVeterinario />} />
+            <Route path="eventos" element={<EventosMascota />} />
+            <Route path="eventos/nuevo" element={<NuevoEventoFuturo />} />
+            <Route path="eventos/:eventoId/editar" element={<EditarEventoFuturo />} />
           </Route>
           <Route path="mascotas/:id/editar" element={<EditarMascota />} />
         </Route>

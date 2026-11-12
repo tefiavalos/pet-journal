@@ -444,6 +444,19 @@ a {
   flex: 3 1 240px;
 }
 
+.registro--vencido {
+  border-left-color: #f9a825;
+}
+
+.etiqueta--vencido {
+  color: #8d5a00;
+  background-color: #fff8e1;
+}
+
+.lista-registros--anteriores {
+  margin-top: 0.75rem;
+}
+
 .registro__icono {
   font-size: 1.5rem;
 }

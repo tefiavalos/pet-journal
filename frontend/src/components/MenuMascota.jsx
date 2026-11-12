@@ -6,6 +6,7 @@ function MenuMascota({ mascotaId }) {
     { ruta: 'tareas', texto: 'Tareas del día' },
     { ruta: 'actividades', texto: 'Actividades' },
     { ruta: 'historial', texto: 'Historial' },
+    { ruta: 'eventos', texto: 'Turnos' },
   ];
 
   return (
