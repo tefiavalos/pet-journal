@@ -3,6 +3,7 @@ import { NavLink } from 'react-router-dom';
 function MenuMascota({ mascotaId }) {
   const secciones = [
     { ruta: '', texto: 'Perfil' },
+    { ruta: 'tareas', texto: 'Tareas del día' },
     { ruta: 'actividades', texto: 'Actividades' },
     { ruta: 'historial', texto: 'Historial' },
   ];

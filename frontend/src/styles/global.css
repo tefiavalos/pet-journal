@@ -480,6 +480,64 @@ a {
   background-color: #fce4ec;
 }
 
+/* Tareas del día */
+
+.selector-dia {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.selector-dia strong::first-letter {
+  text-transform: uppercase;
+}
+
+.tarea {
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+  padding: 0.75rem 1rem;
+  background-color: var(--color-superficie);
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio);
+}
+
+.tarea p {
+  margin: 0.125rem 0 0;
+}
+
+.tarea--hecha {
+  background-color: #f6fbf3;
+}
+
+.tarea--hecha strong {
+  color: var(--color-texto-suave);
+  text-decoration: line-through;
+}
+
+.tarea__check {
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: #fff;
+  background-color: #fff;
+  border: 2px solid var(--color-borde);
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.tarea__check:hover {
+  border-color: var(--color-exito);
+}
+
+.tarea--hecha .tarea__check {
+  background-color: var(--color-exito);
+  border-color: var(--color-exito);
+}
+
 /* Perfil de mascota */
 
 .perfil {
