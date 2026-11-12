@@ -25,3 +25,9 @@ export async function marcarEventoRealizado(id, datos) {
   const { data } = await api.patch(`/eventos-futuros/${id}/realizar`, datos);
   return data;
 }
+
+// Turnos pendientes de los próximos días de todas las mascotas del usuario
+export async function obtenerAvisos() {
+  const { data } = await api.get('/avisos');
+  return data;
+}
