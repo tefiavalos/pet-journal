@@ -1,5 +1,9 @@
 import mongoose from 'mongoose';
 import Mascota from '../models/Mascota.js';
+import TareaDiaria from '../models/TareaDiaria.js';
+import ActividadRecurrente from '../models/ActividadRecurrente.js';
+import EventoVeterinario from '../models/EventoVeterinario.js';
+import EventoFuturo from '../models/EventoFuturo.js';
 import { ErrorApp } from '../utils/ErrorApp.js';
 import { generarCodigoInvitacion } from '../utils/codigoInvitacion.js';
 
@@ -104,7 +108,17 @@ export async function vincularPorCodigo(codigoInvitacion, usuarioId) {
   return mascota;
 }
 
+// Al eliminar una mascota se borran también todos sus registros,
+// para que no queden tareas ni eventos de una mascota que ya no existe
 export async function eliminar(mascotaId, usuarioId) {
   const mascota = await verificarAcceso(mascotaId, usuarioId);
+
+  await Promise.all([
+    TareaDiaria.deleteMany({ mascotaId: mascota._id }),
+    ActividadRecurrente.deleteMany({ mascotaId: mascota._id }),
+    EventoVeterinario.deleteMany({ mascotaId: mascota._id }),
+    EventoFuturo.deleteMany({ mascotaId: mascota._id }),
+  ]);
+
   await mascota.deleteOne();
 }
