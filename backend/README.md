@@ -15,6 +15,11 @@ npm run dev
 
 El servidor queda escuchando en `http://localhost:3000` (o en el puerto definido en `PORT`). Para verificar que la API y la base estén funcionando: `GET http://localhost:3000/api/health`.
 
+## Pruebas
+
+- `npm test` corre las pruebas unitarias de `tests/` (utilidades, historial y validaciones) con el runner de Node, sin necesidad de base de datos.
+- `tests/pet-journal.postman_collection.json` tiene las pruebas de los endpoints. Se importa en Postman o en Thunder Client y se corre en orden con el backend levantado: cada pedido guarda en variables lo que necesitan los siguientes (token, id de la mascota, etc.).
+
 ## Variables de entorno
 
 | Variable | Descripción |
