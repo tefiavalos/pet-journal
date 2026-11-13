@@ -753,6 +753,13 @@ Consideramos que este esquema de base de datos y la definición de los módulos 
 
 ## Despliegue
 
+La aplicación está publicada en:
+
+- **Aplicación:** https://pet-journal-xi.vercel.app
+- **API:** https://pet-journal-api.onrender.com/api (el estado de la API y de la base se puede ver en `/api/health`)
+
+El backend usa el plan gratuito de Render: si no recibe pedidos durante un rato se suspende, y la primera carga puede tardar hasta un minuto.
+
 | Parte | Servicio | Detalle |
 |-------|----------|---------|
 | Base de datos | MongoDB Atlas | [`backend/README.md`](backend/README.md#despliegue) |
