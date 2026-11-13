@@ -4,14 +4,14 @@ import Alerta from '../components/Alerta.jsx';
 import { obtenerHistorial } from '../services/historialService.js';
 import { obtenerMensajeError } from '../services/api.js';
 import { formatearFecha } from '../utils/mascotas.js';
-import { TIPOS_TAREA, TIPOS_CONSULTA, textoTipo, iconoRegistro } from '../utils/registros.js';
+import { TIPOS_TAREA, TIPOS_REGISTRO, TIPOS_CONSULTA, textoTipo, iconoRegistro } from '../utils/registros.js';
 
 const FILTROS_INICIALES = { categoria: '', tipo: '', desde: '', hasta: '' };
 
 function tiposDeCategoria(categoria) {
-  if (categoria === 'cotidiano') return TIPOS_TAREA;
+  if (categoria === 'cotidiano') return [...TIPOS_TAREA, ...TIPOS_REGISTRO];
   if (categoria === 'veterinario') return TIPOS_CONSULTA;
-  return [...TIPOS_TAREA, ...TIPOS_CONSULTA];
+  return [...TIPOS_TAREA, ...TIPOS_REGISTRO, ...TIPOS_CONSULTA];
 }
 
 // Agrupa los registros por día, manteniendo el orden que manda la API
@@ -55,9 +55,14 @@ function HistorialMascota() {
     <div className="seccion-mascota">
       <div className="encabezado-pagina">
         <h2>Historial</h2>
-        <Link to={`/mascotas/${mascota._id}/historial/nuevo`} className="boton">
-          + Registrar evento veterinario
-        </Link>
+        <div className="acciones">
+          <Link to={`/mascotas/${mascota._id}/historial/registro`} className="boton boton--secundario">
+            + Registrar peso o nota
+          </Link>
+          <Link to={`/mascotas/${mascota._id}/historial/nuevo`} className="boton">
+            + Registrar evento veterinario
+          </Link>
+        </div>
       </div>
 
       <div className="filtros tarjeta">
@@ -127,7 +132,8 @@ function HistorialMascota() {
                     <p className="texto-secundario">
                       {registro.hora && `${registro.hora} hs`}
                       {registro.hora && registro.realizadaPor && ' · '}
-                      {registro.realizadaPor && `Hecho por ${registro.realizadaPor}`}
+                      {registro.realizadaPor &&
+                        `${['PESO', 'NOTA'].includes(registro.tipo) ? 'Registrado' : 'Hecho'} por ${registro.realizadaPor}`}
                     </p>
                   </div>
                 </li>

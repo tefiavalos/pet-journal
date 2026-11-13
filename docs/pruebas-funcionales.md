@@ -47,6 +47,8 @@ La columna **Resultado** se completa al probar: ✅ si funcionó como se esperab
 | 22 | RF07, RNF06 | Intentar registrar un evento veterinario con fecha futura | No se puede: el calendario no deja elegirla y el formulario muestra el error | |
 | 23 | RF06 | Filtrar el historial por categoría **Veterinario** | Solo se ven los eventos veterinarios | |
 | 24 | RF06 | Filtrar por un rango de fechas que no incluya ningún registro | Muestra **No hay registros con esos filtros** | |
+| 24b | RF06 | En **Historial**, **+ Registrar peso o nota**: registrar un peso de 25,3 kg | Aparece en el historial como **Peso: 25.3 kg** (cotidiano) y el **Perfil** muestra 25.3 kg | |
+| 24c | RF06 | Registrar una nota y filtrar el historial por tipo **Nota** | Solo se ve la nota, con **Registrado por (nombre)** | |
 
 ## Eventos futuros y avisos
 
