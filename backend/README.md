@@ -42,7 +42,7 @@ El servidor queda escuchando en `http://localhost:3000` (o en el puerto definido
 | POST | `/api/mascotas` | Crea una mascota (el usuario queda como responsable) | Sí |
 | GET | `/api/mascotas/:id` | Perfil de una mascota con sus responsables | Sí |
 | PUT | `/api/mascotas/:id` | Modifica una mascota | Sí |
-| DELETE | `/api/mascotas/:id` | Elimina una mascota con sus tareas, actividades y eventos | Sí |
+| DELETE | `/api/mascotas/:id` | Elimina una mascota con sus tareas, actividades, eventos, pesos y notas | Sí |
 | POST | `/api/mascotas/vincular` | Suma al usuario como responsable usando el `codigoInvitacion` | Sí |
 | GET | `/api/mascotas/:mascotaId/eventos-veterinarios` | Consultas, vacunas, estudios y diagnósticos de la mascota | Sí |
 | POST | `/api/mascotas/:mascotaId/eventos-veterinarios` | Registra un evento veterinario (la fecha es opcional, por defecto hoy) | Sí |
@@ -59,6 +59,8 @@ El servidor queda escuchando en `http://localhost:3000` (o en el puerto definido
 | PATCH | `/api/eventos-futuros/:id/cancelar` | Cancela un evento pendiente | Sí |
 | PATCH | `/api/eventos-futuros/:id/realizar` | Lo marca como realizado y lo pasa al historial veterinario | Sí |
 | GET | `/api/avisos` | Turnos pendientes de los próximos 7 días (y los que ya pasaron sin marcarse) | Sí |
+| GET | `/api/mascotas/:mascotaId/registros` | Cambios de peso y notas de la mascota | Sí |
+| POST | `/api/mascotas/:mascotaId/registros` | Registra un peso (`tipo: PESO`, `peso`) o una nota (`tipo: NOTA`, `texto`). Un peso nuevo actualiza el perfil | Sí |
 | GET | `/api/mascotas/:mascotaId/historial` | Historial cronológico. Filtros opcionales: `categoria` (`cotidiano` o `veterinario`), `tipo`, `desde` y `hasta` (`AAAA-MM-DD`) | Sí |
 
 Los endpoints protegidos esperan el header `Authorization: Bearer <token>`. Los errores se devuelven siempre con el formato `{ "mensaje": "..." }`.

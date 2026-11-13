@@ -3,6 +3,7 @@ import { TIPOS_MASCOTA, SEXOS_MASCOTA } from '../models/Mascota.js';
 import { TIPOS_CONSULTA } from '../models/EventoVeterinario.js';
 import { TIPOS_TAREA, ESTADOS_TAREA, HORA_REGEX } from '../models/TareaDiaria.js';
 import { ESTADOS_EVENTO_FUTURO } from '../models/EventoFuturo.js';
+import { TIPOS_REGISTRO } from '../models/RegistroCotidiano.js';
 import { parsearDia, hoy } from '../utils/fechas.js';
 import { CATEGORIAS_HISTORIAL } from '../utils/historial.js';
 
@@ -155,7 +156,7 @@ export function validarFiltrosHistorial(req, res, next) {
   }
 
   if (!vacio(tipo)) {
-    if (![...TIPOS_TAREA, ...TIPOS_CONSULTA].includes(tipo)) errores.push('El tipo no es válido');
+    if (![...TIPOS_TAREA, ...TIPOS_REGISTRO, ...TIPOS_CONSULTA].includes(tipo)) errores.push('El tipo no es válido');
     else filtros.tipo = tipo;
   }
 
@@ -282,5 +283,40 @@ export function validarFiltroEstadoEvento(req, res, next) {
   }
 
   req.estado = vacio(estado) ? null : estado;
+  next();
+}
+
+// Cambios de peso y notas del historial cotidiano
+export function validarRegistroCotidiano(req, res, next) {
+  const datos = req.body ?? {};
+  const errores = [];
+
+  const registro = {
+    tipo: textoOpcional(datos.tipo),
+    texto: textoOpcional(datos.texto),
+    peso: null,
+    fecha: parsearDia(hoy()),
+  };
+
+  if (!TIPOS_REGISTRO.includes(registro.tipo)) errores.push('El tipo de registro tiene que ser PESO o NOTA');
+
+  if (registro.tipo === 'PESO') {
+    const peso = vacio(datos.peso) ? NaN : Number(datos.peso);
+    if (!Number.isFinite(peso) || peso <= 0) errores.push('El peso tiene que ser un número mayor a 0');
+    else registro.peso = peso;
+  }
+
+  if (registro.tipo === 'NOTA' && !registro.texto) errores.push('El texto de la nota es obligatorio');
+
+  // La fecha es opcional: si no viene, se toma la de hoy
+  if (!vacio(datos.fecha)) {
+    const fecha = parsearDia(datos.fecha);
+    if (!fecha) errores.push('La fecha no es válida');
+    else if (fecha > parsearDia(hoy())) errores.push('La fecha no puede ser futura');
+    else registro.fecha = fecha;
+  }
+
+  responderSiHayErrores(errores);
+  req.body = registro;
   next();
 }

@@ -8,7 +8,7 @@ Se ejecutan en orden con `mongosh`:
 
 | Script | Contenido |
 |--------|-----------|
-| `scripts/01_crear_colecciones.js` | Crea las 6 colecciones con sus validadores |
+| `scripts/01_crear_colecciones.js` | Crea las 7 colecciones con sus validadores |
 | `scripts/02_indices.js` | Crea los índices principales |
 | `scripts/03_datos_prueba.js` | Inserta datos de ejemplo |
 
@@ -26,8 +26,11 @@ mongosh "mongodb://localhost:27017/petjournal" scripts/01_crear_colecciones.js s
 | `eventosVeterinarios` | `_id` (ObjectId) | `mascotaId` → `mascotas._id` |
 | `eventosFuturos` | `_id` (ObjectId) | `mascotaId` → `mascotas._id` |
 | `actividadesRecurrentes` | `_id` (ObjectId) | `mascotaId` → `mascotas._id` |
+| `registrosCotidianos` | `_id` (ObjectId) | `mascotaId` → `mascotas._id`, `registradoPor` → `usuarios._id` |
 
 `actividadesRecurrentes` se agregó durante el desarrollo de las tareas diarias: guarda las actividades que se repiten todos los días (por ejemplo, comida a las 08:00) y a partir de ellas se generan las instancias de `tareasDiarias` de cada día. Cada tarea guarda en `actividadId` la actividad que la generó.
+
+`registrosCotidianos` se agregó para completar el historial cotidiano de la propuesta: guarda los **cambios de peso** y las **notas o acontecimientos relevantes**, que no salen de una tarea diaria. Al registrar un peso, el perfil de la mascota se actualiza con el último valor.
 
 ## Valores controlados (enums)
 
@@ -38,6 +41,7 @@ mongosh "mongodb://localhost:27017/petjournal" scripts/01_crear_colecciones.js s
 | `tareasDiarias.tipo` | `ALIMENTACION`, `MEDICACION`, `PASEO` |
 | `tareasDiarias.estado` | `PENDIENTE`, `HECHO` |
 | `actividadesRecurrentes.tipo` | `ALIMENTACION`, `MEDICACION`, `PASEO` |
+| `registrosCotidianos.tipo` | `PESO`, `NOTA` |
 | `tipoConsulta` (eventos veterinarios y futuros) | `CONTROL`, `URGENCIA`, `ESPECIALISTA`, `VACUNA` |
 | `eventosFuturos.estado` | `PENDIENTE`, `REALIZADO`, `CANCELADO` |
 
@@ -51,6 +55,7 @@ mongosh "mongodb://localhost:27017/petjournal" scripts/01_crear_colecciones.js s
 | `tareasDiarias` | `{ mascotaId, fecha }` | Lista de tareas del día de una mascota (RF08) |
 | `tareasDiarias` | `{ actividadId, fecha }` (único) | No generar dos veces la misma tarea en un día |
 | `actividadesRecurrentes` | `{ mascotaId, activa }` | Actividades activas de una mascota |
+| `registrosCotidianos` | `{ mascotaId, fecha }` | Pesos y notas de una mascota para el historial (RF06) |
 | `eventosVeterinarios` | `{ mascotaId, fecha: -1 }` | Historial ordenado cronológicamente (RF06) |
 | `eventosFuturos` | `{ mascotaId, fecha }` | Eventos futuros de una mascota (RF10) |
 | `eventosFuturos` | `{ estado, fecha }` | Cálculo de avisos próximos (RF12) |

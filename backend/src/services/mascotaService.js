@@ -4,6 +4,7 @@ import TareaDiaria from '../models/TareaDiaria.js';
 import ActividadRecurrente from '../models/ActividadRecurrente.js';
 import EventoVeterinario from '../models/EventoVeterinario.js';
 import EventoFuturo from '../models/EventoFuturo.js';
+import RegistroCotidiano from '../models/RegistroCotidiano.js';
 import { ErrorApp } from '../utils/ErrorApp.js';
 import { generarCodigoInvitacion } from '../utils/codigoInvitacion.js';
 
@@ -118,6 +119,7 @@ export async function eliminar(mascotaId, usuarioId) {
     ActividadRecurrente.deleteMany({ mascotaId: mascota._id }),
     EventoVeterinario.deleteMany({ mascotaId: mascota._id }),
     EventoFuturo.deleteMany({ mascotaId: mascota._id }),
+    RegistroCotidiano.deleteMany({ mascotaId: mascota._id }),
   ]);
 
   await mascota.deleteOne();

@@ -30,3 +30,6 @@ db.eventosFuturos.createIndex({ mascotaId: 1, fecha: 1 });
 
 // Cálculo de avisos próximos (RF12)
 db.eventosFuturos.createIndex({ estado: 1, fecha: 1 });
+
+// Pesos y notas de una mascota para el historial (RF06)
+db.registrosCotidianos.createIndex({ mascotaId: 1, fecha: -1 });

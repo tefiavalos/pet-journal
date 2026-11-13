@@ -1,6 +1,11 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { entradaDeTarea, entradaDeEventoVeterinario, ordenarHistorial } from '../src/utils/historial.js';
+import {
+  entradaDeTarea,
+  entradaDeEventoVeterinario,
+  entradaDeRegistroCotidiano,
+  ordenarHistorial,
+} from '../src/utils/historial.js';
 
 const tarea = {
   _id: 't1',
@@ -51,4 +56,28 @@ test('el historial queda ordenado del más reciente al más antiguo', () => {
     historial.map((e) => e._id),
     ['t1', 't2', 'ev1'],
   );
+});
+
+test('un cambio de peso se muestra como información cotidiana con el peso en el título', () => {
+  const entrada = entradaDeRegistroCotidiano({
+    _id: 'r1',
+    tipo: 'PESO',
+    fecha: new Date('2026-11-03T00:00:00Z'),
+    peso: 25.3,
+    registradoPor: { nombre: 'Estefanía' },
+  });
+  assert.equal(entrada.categoria, 'cotidiano');
+  assert.equal(entrada.titulo, 'Peso: 25.3 kg');
+  assert.equal(entrada.realizadaPor, 'Estefanía');
+});
+
+test('una nota se muestra con su texto como descripción', () => {
+  const entrada = entradaDeRegistroCotidiano({
+    _id: 'r2',
+    tipo: 'NOTA',
+    fecha: new Date('2026-11-03T00:00:00Z'),
+    texto: 'Empezó a comer el alimento nuevo',
+  });
+  assert.equal(entrada.titulo, 'Nota');
+  assert.equal(entrada.descripcion, 'Empezó a comer el alimento nuevo');
 });

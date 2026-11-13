@@ -6,7 +6,8 @@ const TITULOS_TAREA = {
   PASEO: 'Paseo',
 };
 
-// Cada registro del historial tiene la misma forma, venga de donde venga:
+// Cada registro del historial tiene la misma forma, venga de donde venga
+// (tareas hechas, pesos y notas, o eventos veterinarios):
 // { _id, categoria, tipo, fecha, hora?, titulo, descripcion?, realizadaPor? }
 export function entradaDeEventoVeterinario(evento) {
   return {
@@ -29,6 +30,18 @@ export function entradaDeTarea(tarea) {
     titulo: TITULOS_TAREA[tarea.tipo],
     descripcion: tarea.descripcion,
     realizadaPor: tarea.realizadaPor?.nombre,
+  };
+}
+
+export function entradaDeRegistroCotidiano(registro) {
+  return {
+    _id: registro._id,
+    categoria: 'cotidiano',
+    tipo: registro.tipo,
+    fecha: registro.fecha,
+    titulo: registro.tipo === 'PESO' ? `Peso: ${registro.peso} kg` : 'Nota',
+    descripcion: registro.texto,
+    realizadaPor: registro.registradoPor?.nombre,
   };
 }
 

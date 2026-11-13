@@ -121,3 +121,21 @@ db.createCollection("eventosFuturos", {
     }
   }
 });
+
+// Información cotidiana que no sale de una tarea: cambios de peso y notas
+db.createCollection("registrosCotidianos", {
+  validator: {
+    $jsonSchema: {
+      bsonType: "object",
+      required: ["mascotaId", "tipo", "fecha"],
+      properties: {
+        mascotaId: { bsonType: "objectId" },
+        tipo: { enum: ["PESO", "NOTA"] },
+        fecha: { bsonType: "date" },
+        peso: { bsonType: ["double", "int"], minimum: 0, description: "Solo en los registros de PESO, en kg" },
+        texto: { bsonType: "string" },
+        registradoPor: { bsonType: "objectId" }
+      }
+    }
+  }
+});

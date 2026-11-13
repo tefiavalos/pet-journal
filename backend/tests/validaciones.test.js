@@ -7,6 +7,7 @@ import {
   validarEstadoTarea,
   validarEventoFuturo,
   validarFiltrosHistorial,
+  validarRegistroCotidiano,
 } from '../src/middlewares/validaciones.js';
 
 // Ejecuta un middleware con un req armado a mano.
@@ -96,4 +97,25 @@ test('historial: acepta filtros válidos', () => {
     query: { categoria: 'cotidiano', tipo: 'PASEO' },
   });
   assert.deepEqual(req.filtros, { categoria: 'cotidiano', tipo: 'PASEO' });
+});
+
+test('registro cotidiano: un peso tiene que ser mayor a 0', () => {
+  const { error } = ejecutar(validarRegistroCotidiano, { body: { tipo: 'PESO', peso: '0' } });
+  assert.match(error.message, /mayor a 0/);
+});
+
+test('registro cotidiano: una nota necesita texto', () => {
+  const { error } = ejecutar(validarRegistroCotidiano, { body: { tipo: 'NOTA', texto: ' ' } });
+  assert.match(error.message, /obligatorio/);
+});
+
+test('registro cotidiano: acepta un peso válido y toma la fecha de hoy', () => {
+  const { req } = ejecutar(validarRegistroCotidiano, { body: { tipo: 'PESO', peso: '25.3' } });
+  assert.equal(req.body.peso, 25.3);
+  assert.ok(req.body.fecha instanceof Date);
+});
+
+test('historial: acepta los tipos PESO y NOTA como filtro', () => {
+  const { req } = ejecutar(validarFiltrosHistorial, { query: { tipo: 'PESO' } });
+  assert.equal(req.filtros.tipo, 'PESO');
 });

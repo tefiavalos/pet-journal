@@ -11,6 +11,7 @@ import { requiereAutenticacion } from '../middlewares/auth.js';
 import { validarMascota, validarCodigoInvitacion } from '../middlewares/validaciones.js';
 import eventoVeterinarioRoutes from './eventoVeterinarioRoutes.js';
 import historialRoutes from './historialRoutes.js';
+import registroCotidianoRoutes from './registroCotidianoRoutes.js';
 import { actividadesDeMascota } from './actividadRoutes.js';
 import { tareasDeMascota } from './tareaRoutes.js';
 import { eventosFuturosDeMascota } from './eventoFuturoRoutes.js';
@@ -30,6 +31,7 @@ router.delete('/:id', eliminar);
 // Rutas de los registros de cada mascota
 router.use('/:mascotaId/eventos-veterinarios', eventoVeterinarioRoutes);
 router.use('/:mascotaId/historial', historialRoutes);
+router.use('/:mascotaId/registros', registroCotidianoRoutes);
 router.use('/:mascotaId/actividades', actividadesDeMascota);
 router.use('/:mascotaId/tareas', tareasDeMascota);
 router.use('/:mascotaId/eventos-futuros', eventosFuturosDeMascota);

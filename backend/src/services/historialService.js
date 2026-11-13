@@ -1,8 +1,14 @@
 import EventoVeterinario, { TIPOS_CONSULTA } from '../models/EventoVeterinario.js';
 import TareaDiaria, { TIPOS_TAREA } from '../models/TareaDiaria.js';
+import RegistroCotidiano, { TIPOS_REGISTRO } from '../models/RegistroCotidiano.js';
 import { verificarAcceso } from './mascotaService.js';
 import { sumarDias } from '../utils/fechas.js';
-import { entradaDeEventoVeterinario, entradaDeTarea, ordenarHistorial } from '../utils/historial.js';
+import {
+  entradaDeEventoVeterinario,
+  entradaDeTarea,
+  entradaDeRegistroCotidiano,
+  ordenarHistorial,
+} from '../utils/historial.js';
 
 function rangoDeFechas({ desde, hasta }) {
   if (!desde && !hasta) return undefined;
@@ -32,6 +38,17 @@ export async function obtenerHistorial(mascotaId, usuarioId, filtros) {
       ...(fecha && { fecha }),
     }).populate('realizadaPor', 'nombre');
     entradas.push(...tareas.map(entradaDeTarea));
+  }
+
+  // Información cotidiana: cambios de peso y notas
+  const incluirRegistros = categoria !== 'veterinario' && (!tipo || TIPOS_REGISTRO.includes(tipo));
+  if (incluirRegistros) {
+    const registros = await RegistroCotidiano.find({
+      mascotaId,
+      ...(tipo && { tipo }),
+      ...(fecha && { fecha }),
+    }).populate('registradoPor', 'nombre');
+    entradas.push(...registros.map(entradaDeRegistroCotidiano));
   }
 
   // Información veterinaria
