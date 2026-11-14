@@ -1,5 +1,12 @@
 ﻿# Pet Journal — Propuesta y plan de trabajo
 
+## Integrantes
+
+- Andrea Ayala
+- Estefanía Avalos
+
+Grupo N.º 158 · Tutor: Sergio Andrés Antonini
+
 ## 1. Definición del problema
 
 Las personas que tienen mascotas suelen necesitar llevar un registro de información relacionada con ellas. Esta información suele encontrarse distribuida entre diferentes medios como aplicaciones de notas, conversaciones de mensajería, calendarios, documentos veterinarios o recordatorios personales.
