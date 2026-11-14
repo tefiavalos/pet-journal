@@ -751,6 +751,8 @@ Consideramos que este esquema de base de datos y la definición de los módulos 
 - Backend: `npm test` dentro de `backend` corre las pruebas unitarias, y `backend/tests/pet-journal.postman_collection.json` tiene las pruebas de los endpoints.
 - Funcionalidades: [`docs/pruebas-funcionales.md`](docs/pruebas-funcionales.md).
 
+Resultados: las 27 pruebas unitarias pasan y las 37 pruebas funcionales y no funcionales dieron el resultado esperado sobre la aplicación publicada.
+
 ## Despliegue
 
 La aplicación está publicada en:
@@ -765,3 +767,7 @@ El backend usa el plan gratuito de Render: si no recibe pedidos durante un rato 
 | Base de datos | MongoDB Atlas | [`backend/README.md`](backend/README.md#despliegue) |
 | Backend | Render | [`backend/README.md`](backend/README.md#despliegue) |
 | Frontend | Vercel | [`frontend/README.md`](frontend/README.md#despliegue) |
+
+## Video de presentación
+
+El video está en esta carpeta de Google Drive: https://drive.google.com/drive/folders/1w65_rWxVmowzGy3SsqE-wrhUqZwHHTbG?usp=sharing
