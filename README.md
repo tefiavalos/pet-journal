@@ -775,6 +775,9 @@ El backend usa el plan gratuito de Render: si no recibe pedidos durante un rato 
 | Backend | Render | [`backend/README.md`](backend/README.md#despliegue) |
 | Frontend | Vercel | [`frontend/README.md`](frontend/README.md#despliegue) |
 
-## Video de presentación
+## Video de presentación e Informe final
 
-El video está en esta carpeta de Google Drive: https://drive.google.com/drive/folders/1w65_rWxVmowzGy3SsqE-wrhUqZwHHTbG?usp=sharing
+Tanto el video de presentación como el informe final detallado se encuentran disponibles en la siguiente carpeta de Google Drive: https://drive.google.com/drive/folders/1w65_rWxVmowzGy3SsqE-wrhUqZwHHTbG?usp=sharing
+
+El informe en PDF también está disponible en [`docs/Pet Journal - Informe final.pdf`](docs/Pet%20Journal%20-%20Informe%20final.pdf)
+
