@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link, useNavigate, useOutletContext } from 'react-router-dom';
 import Alerta from '../components/Alerta.jsx';
+import { useConfirmacion } from '../hooks/useConfirmacion.jsx';
 import { eliminarMascota } from '../services/mascotaService.js';
 import { obtenerMensajeError } from '../services/api.js';
 import { calcularEdad, formatearFecha } from '../utils/mascotas.js';
@@ -15,6 +16,7 @@ function PerfilMascota() {
   const [error, setError] = useState('');
   const [copiado, setCopiado] = useState(false);
   const [eliminando, setEliminando] = useState(false);
+  const [confirmar, dialogo] = useConfirmacion();
 
   async function handleCopiarCodigo() {
     try {
@@ -27,10 +29,13 @@ function PerfilMascota() {
   }
 
   async function handleEliminar() {
-    const confirmar = window.confirm(
-      `¿Seguro que querés eliminar a ${mascota.nombre}? Se borra para todos sus responsables, junto con su historial.`,
-    );
-    if (!confirmar) return;
+    const confirmado = await confirmar({
+      titulo: `¿Eliminar a ${mascota.nombre}?`,
+      mensaje: 'Se borra para todos sus responsables, junto con su historial. No se puede deshacer.',
+      textoConfirmar: 'Eliminar',
+      peligro: true,
+    });
+    if (!confirmado) return;
 
     setEliminando(true);
     try {
@@ -113,6 +118,8 @@ function PerfilMascota() {
           </div>
         </article>
       </div>
+
+      {dialogo}
     </>
   );
 }

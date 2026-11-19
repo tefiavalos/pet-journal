@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link, useOutletContext } from 'react-router-dom';
 import Alerta from '../components/Alerta.jsx';
+import { useConfirmacion } from '../hooks/useConfirmacion.jsx';
 import {
   listarEventosFuturos,
   cancelarEventoFuturo,
@@ -21,6 +22,7 @@ function EventosMascota() {
   const [error, setError] = useState('');
   const [mensaje, setMensaje] = useState('');
   const [verAnteriores, setVerAnteriores] = useState(false);
+  const [confirmar, dialogo] = useConfirmacion();
 
   useEffect(() => {
     listarEventosFuturos(mascota._id)
@@ -34,7 +36,12 @@ function EventosMascota() {
   }
 
   async function handleRealizado(evento) {
-    if (!window.confirm(`¿Confirmás que "${evento.titulo}" se realizó? Va a quedar guardado en el historial.`)) return;
+    const confirmado = await confirmar({
+      titulo: '¿Se realizó el turno?',
+      mensaje: `"${evento.titulo}" va a quedar guardado en el historial veterinario y ya no se va a poder modificar.`,
+      textoConfirmar: 'Sí, se realizó',
+    });
+    if (!confirmado) return;
 
     setError('');
     setMensaje('');
@@ -49,7 +56,14 @@ function EventosMascota() {
   }
 
   async function handleCancelar(evento) {
-    if (!window.confirm(`¿Cancelar "${evento.titulo}"?`)) return;
+    const confirmado = await confirmar({
+      titulo: '¿Cancelar el turno?',
+      mensaje: `"${evento.titulo}" va a quedar como cancelado.`,
+      textoConfirmar: 'Cancelar turno',
+      textoCancelar: 'Volver',
+      peligro: true,
+    });
+    if (!confirmado) return;
 
     setError('');
     setMensaje('');
@@ -143,6 +157,8 @@ function EventosMascota() {
           )}
         </div>
       )}
+
+      {dialogo}
     </div>
   );
 }

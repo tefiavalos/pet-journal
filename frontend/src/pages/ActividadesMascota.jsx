@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useOutletContext } from 'react-router-dom';
 import Alerta from '../components/Alerta.jsx';
+import { useConfirmacion } from '../hooks/useConfirmacion.jsx';
 import {
   listarActividades,
   crearActividad,
@@ -26,6 +27,7 @@ function ActividadesMascota() {
   const [editandoId, setEditandoId] = useState(null);
   const [error, setError] = useState('');
   const [enviando, setEnviando] = useState(false);
+  const [confirmar, dialogo] = useConfirmacion();
 
   useEffect(() => {
     listarActividades(mascota._id)
@@ -96,11 +98,15 @@ function ActividadesMascota() {
   }
 
   async function handleEliminar(actividad) {
-    const confirmar = window.confirm(
-      `¿Eliminar la actividad de ${textoTipo(actividad.tipo).toLowerCase()} de las ${actividad.hora}? ` +
+    const confirmado = await confirmar({
+      titulo: '¿Eliminar esta actividad?',
+      mensaje:
+        `Se elimina la actividad de ${textoTipo(actividad.tipo).toLowerCase()} de las ${actividad.hora}. ` +
         'Las tareas que ya se hicieron siguen en el historial.',
-    );
-    if (!confirmar) return;
+      textoConfirmar: 'Eliminar',
+      peligro: true,
+    });
+    if (!confirmado) return;
 
     setError('');
     try {
@@ -200,6 +206,8 @@ function ActividadesMascota() {
           </li>
         ))}
       </ul>
+
+      {dialogo}
     </div>
   );
 }

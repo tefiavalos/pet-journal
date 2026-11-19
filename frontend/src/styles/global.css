@@ -868,3 +868,69 @@ a {
     grid-template-columns: 1fr;
   }
 }
+
+/* Diálogo de confirmación (reemplaza a window.confirm) */
+
+.dialogo {
+  width: min(420px, calc(100% - 2rem));
+  padding: 0;
+  color: var(--color-texto);
+  background-color: var(--color-superficie);
+  border: none;
+  border-radius: var(--radio);
+  box-shadow: 0 12px 32px rgb(0 0 0 / 0.18);
+}
+
+.dialogo[open] {
+  animation: dialogo-aparecer 0.15s ease-out;
+}
+
+.dialogo::backdrop {
+  background-color: rgb(43 43 43 / 0.45);
+}
+
+.dialogo__contenido {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1.5rem;
+}
+
+.dialogo__titulo {
+  margin: 0;
+  font-size: 1.2rem;
+  color: var(--color-primario-oscuro);
+}
+
+.dialogo__mensaje {
+  margin: 0;
+  line-height: 1.5;
+  color: var(--color-texto-suave);
+}
+
+.dialogo__acciones {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+}
+
+@keyframes dialogo-aparecer {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dialogo[open] {
+    animation: none;
+  }
+}
+
+@media (max-width: 400px) {
+  .dialogo__acciones .boton {
+    flex: 1;
+  }
+}
