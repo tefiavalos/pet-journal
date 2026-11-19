@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Alerta from './Alerta.jsx';
 import { obtenerMensajeError } from '../services/api.js';
+import { LARGO_MAXIMO } from '../utils/largos.js';
 
 export const MASCOTA_VACIA = {
   nombre: '',
@@ -64,7 +65,7 @@ function FormularioMascota({ valoresIniciales = MASCOTA_VACIA, onGuardar, textoB
       <div className="formulario__fila">
         <label className="campo">
           <span>Nombre</span>
-          <input type="text" name="nombre" value={form.nombre} onChange={handleChange} />
+          <input type="text" name="nombre" value={form.nombre} maxLength={LARGO_MAXIMO.nombreMascota} onChange={handleChange} />
         </label>
 
         <label className="campo">
@@ -82,7 +83,7 @@ function FormularioMascota({ valoresIniciales = MASCOTA_VACIA, onGuardar, textoB
           <span>
             Raza <small>(opcional)</small>
           </span>
-          <input type="text" name="raza" value={form.raza} onChange={handleChange} />
+          <input type="text" name="raza" value={form.raza} maxLength={LARGO_MAXIMO.raza} onChange={handleChange} />
         </label>
 
         <label className="campo">
@@ -117,14 +118,20 @@ function FormularioMascota({ valoresIniciales = MASCOTA_VACIA, onGuardar, textoB
         <span>
           Link de la foto <small>(opcional)</small>
         </span>
-        <input type="url" name="foto" value={form.foto} placeholder="https://..." onChange={handleChange} />
+        <input type="url" name="foto" value={form.foto} placeholder="https://..." maxLength={LARGO_MAXIMO.foto} onChange={handleChange} />
       </label>
 
       <label className="campo">
         <span>
           Condiciones médicas y medicación <small>(opcional)</small>
         </span>
-        <textarea name="condicionesMedicas" rows="3" value={form.condicionesMedicas} onChange={handleChange} />
+        <textarea
+          name="condicionesMedicas"
+          rows="3"
+          value={form.condicionesMedicas}
+          maxLength={LARGO_MAXIMO.condicionesMedicas}
+          onChange={handleChange}
+        />
       </label>
 
       <div className="acciones">

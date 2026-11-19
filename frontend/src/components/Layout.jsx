@@ -42,7 +42,9 @@ function Layout() {
             <nav className={`navegacion ${menuAbierto ? 'navegacion--abierta' : ''}`}>
               <NavLink to="/hoy">Hoy</NavLink>
               <NavLink to="/mascotas">Mis mascotas</NavLink>
-              <span className="navegacion__usuario">{usuario.nombre}</span>
+              <span className="navegacion__usuario" title={usuario.nombre}>
+                {usuario.nombre}
+              </span>
               <button type="button" className="boton boton--chico boton--secundario" onClick={handleCerrarSesion}>
                 Cerrar sesión
               </button>

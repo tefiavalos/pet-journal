@@ -12,6 +12,7 @@ import { obtenerMensajeError } from '../services/api.js';
 import { TIPOS_TAREA, textoTipo, iconoRegistro } from '../utils/registros.js';
 import { hoyLocal } from '../utils/fechas.js';
 import Icono from '../components/Icono.jsx';
+import { LARGO_MAXIMO } from '../utils/largos.js';
 
 const FORM_VACIO = { tipo: 'ALIMENTACION', hora: '', descripcion: '' };
 
@@ -155,6 +156,7 @@ function ActividadesMascota() {
             type="text"
             name="descripcion"
             value={form.descripcion}
+            maxLength={LARGO_MAXIMO.descripcionActividad}
             placeholder="Ej: una taza de alimento, 1/2 pastilla..."
             onChange={handleChange}
           />

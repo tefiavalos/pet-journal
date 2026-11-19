@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext.jsx';
 import { obtenerMensajeError } from '../services/api.js';
 import Alerta from '../components/Alerta.jsx';
+import { LARGO_MAXIMO } from '../utils/largos.js';
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const PASSWORD_MIN = 8;
@@ -69,7 +70,14 @@ function Registro() {
 
         <label className="campo">
           <span>Nombre</span>
-          <input type="text" name="nombre" value={form.nombre} onChange={handleChange} autoComplete="name" />
+          <input
+            type="text"
+            name="nombre"
+            value={form.nombre}
+            maxLength={LARGO_MAXIMO.nombreUsuario}
+            onChange={handleChange}
+            autoComplete="name"
+          />
         </label>
 
         <label className="campo">

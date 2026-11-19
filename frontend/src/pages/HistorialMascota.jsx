@@ -122,8 +122,8 @@ function HistorialMascota() {
               {delDia.map((registro) => (
                 <li key={registro._id} className={`registro registro--${registro.categoria}`}>
                   <span className="registro__icono">
-              <Icono nombre={iconoRegistro(registro.tipo)} />
-            </span>
+                    <Icono nombre={iconoRegistro(registro.tipo)} />
+                  </span>
                   <div className="registro__datos">
                     <div className="registro__titulo">
                       <strong>{registro.titulo}</strong>

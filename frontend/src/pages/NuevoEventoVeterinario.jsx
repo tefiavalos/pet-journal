@@ -5,6 +5,7 @@ import { crearEventoVeterinario } from '../services/eventoVeterinarioService.js'
 import { obtenerMensajeError } from '../services/api.js';
 import { TIPOS_CONSULTA } from '../utils/registros.js';
 import { hoyLocal } from '../utils/fechas.js';
+import { LARGO_MAXIMO } from '../utils/largos.js';
 
 function NuevoEventoVeterinario() {
   const { mascota } = useOutletContext();
@@ -78,6 +79,7 @@ function NuevoEventoVeterinario() {
             type="text"
             name="titulo"
             value={form.titulo}
+            maxLength={LARGO_MAXIMO.titulo}
             placeholder="Ej: Control anual"
             onChange={handleChange}
           />
@@ -91,6 +93,7 @@ function NuevoEventoVeterinario() {
             name="descripcion"
             rows="4"
             value={form.descripcion}
+            maxLength={LARGO_MAXIMO.descripcion}
             placeholder="Diagnóstico, indicaciones, estudios, próximos pasos..."
             onChange={handleChange}
           />

@@ -10,6 +10,25 @@ import { CATEGORIAS_HISTORIAL } from '../utils/historial.js';
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const PASSWORD_MIN = 8;
 
+// Largo máximo de los textos (el frontend usa los mismos en los formularios)
+export const LARGO_MAXIMO = {
+  nombreUsuario: 60,
+  nombreMascota: 40,
+  raza: 50,
+  foto: 500,
+  condicionesMedicas: 500,
+  titulo: 80,
+  descripcionActividad: 200,
+  descripcion: 500,
+  nota: 1000,
+};
+
+function controlarLargo(errores, valor, maximo, campo) {
+  if (typeof valor === 'string' && valor.trim().length > maximo) {
+    errores.push(`${campo} puede tener hasta ${maximo} caracteres`);
+  }
+}
+
 function textoValido(valor) {
   return typeof valor === 'string' && valor.trim() !== '';
 }
@@ -25,6 +44,7 @@ export function validarRegistro(req, res, next) {
   const errores = [];
 
   if (!textoValido(nombre)) errores.push('El nombre es obligatorio');
+  controlarLargo(errores, nombre, LARGO_MAXIMO.nombreUsuario, 'El nombre');
   if (!textoValido(email) || !EMAIL_REGEX.test(email.trim())) errores.push('El email no es válido');
   if (typeof password !== 'string' || password.length < PASSWORD_MIN) {
     errores.push(`La contraseña debe tener al menos ${PASSWORD_MIN} caracteres`);
@@ -81,6 +101,10 @@ export function validarMascota(req, res, next) {
   };
 
   if (!mascota.nombre) errores.push('El nombre es obligatorio');
+  controlarLargo(errores, mascota.nombre, LARGO_MAXIMO.nombreMascota, 'El nombre');
+  controlarLargo(errores, mascota.raza, LARGO_MAXIMO.raza, 'La raza');
+  controlarLargo(errores, mascota.foto, LARGO_MAXIMO.foto, 'La URL de la foto');
+  controlarLargo(errores, mascota.condicionesMedicas, LARGO_MAXIMO.condicionesMedicas, 'Las condiciones médicas');
   if (!TIPOS_MASCOTA.includes(mascota.tipo)) errores.push('El tipo de mascota no es válido');
   if (mascota.sexo && !SEXOS_MASCOTA.includes(mascota.sexo)) errores.push('El sexo no es válido');
 
@@ -126,6 +150,8 @@ export function validarEventoVeterinario(req, res, next) {
 
   if (!evento.titulo) errores.push('El título es obligatorio');
   if (!TIPOS_CONSULTA.includes(evento.tipoConsulta)) errores.push('El tipo de consulta no es válido');
+  controlarLargo(errores, evento.titulo, LARGO_MAXIMO.titulo, 'El título');
+  controlarLargo(errores, evento.descripcion, LARGO_MAXIMO.descripcion, 'La descripción');
 
   // La fecha es opcional: si no viene, se toma la de hoy
   if (!vacio(datos.fecha)) {
@@ -189,6 +215,7 @@ export function validarActividad(req, res, next) {
 
   if (!TIPOS_TAREA.includes(actividad.tipo)) errores.push('El tipo de actividad no es válido');
   if (!HORA_REGEX.test(actividad.hora ?? '')) errores.push('La hora tiene que tener el formato HH:MM');
+  controlarLargo(errores, actividad.descripcion, LARGO_MAXIMO.descripcionActividad, 'La descripción');
 
   if (datos.activa !== undefined) {
     if (typeof datos.activa !== 'boolean') errores.push('El campo activa tiene que ser true o false');
@@ -244,6 +271,8 @@ export function validarEventoFuturo(req, res, next) {
 
   if (!evento.titulo) errores.push('El título es obligatorio');
   if (!TIPOS_CONSULTA.includes(evento.tipoConsulta)) errores.push('El tipo de consulta no es válido');
+  controlarLargo(errores, evento.titulo, LARGO_MAXIMO.titulo, 'El título');
+  controlarLargo(errores, evento.descripcion, LARGO_MAXIMO.descripcion, 'La descripción');
 
   const fecha = vacio(datos.fecha) ? null : new Date(datos.fecha);
   if (!fecha || Number.isNaN(fecha.getTime())) {
@@ -263,6 +292,10 @@ export function validarEventoFuturo(req, res, next) {
 export function validarRealizacion(req, res, next) {
   const datos = req.body ?? {};
   const realizacion = { fecha: null, descripcion: textoOpcional(datos.descripcion) };
+
+  if (realizacion.descripcion && realizacion.descripcion.length > LARGO_MAXIMO.descripcion) {
+    throw new ErrorApp(400, `La descripción puede tener hasta ${LARGO_MAXIMO.descripcion} caracteres`);
+  }
 
   if (!vacio(datos.fecha)) {
     realizacion.fecha = parsearDia(datos.fecha);
@@ -307,6 +340,7 @@ export function validarRegistroCotidiano(req, res, next) {
   }
 
   if (registro.tipo === 'NOTA' && !registro.texto) errores.push('El texto de la nota es obligatorio');
+  controlarLargo(errores, registro.texto, LARGO_MAXIMO.nota, 'El texto');
 
   // La fecha es opcional: si no viene, se toma la de hoy
   if (!vacio(datos.fecha)) {

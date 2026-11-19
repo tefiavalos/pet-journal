@@ -107,8 +107,8 @@ function EventosMascota() {
           return (
             <li key={evento._id} className={`registro registro--veterinario ${yaPaso ? 'registro--vencido' : ''}`}>
               <span className="registro__icono">
-              <Icono nombre={iconoRegistro(evento.tipoConsulta)} />
-            </span>
+                <Icono nombre={iconoRegistro(evento.tipoConsulta)} />
+              </span>
               <div className="registro__datos">
                 <div className="registro__titulo">
                   <strong>{evento.titulo}</strong>
@@ -147,8 +147,8 @@ function EventosMascota() {
               {anteriores.map((evento) => (
                 <li key={evento._id} className="registro registro--inactivo">
                   <span className="registro__icono">
-              <Icono nombre={iconoRegistro(evento.tipoConsulta)} />
-            </span>
+                    <Icono nombre={iconoRegistro(evento.tipoConsulta)} />
+                  </span>
                   <div className="registro__datos">
                     <div className="registro__titulo">
                       <strong>{evento.titulo}</strong>

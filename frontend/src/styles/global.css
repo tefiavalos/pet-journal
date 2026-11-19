@@ -72,8 +72,10 @@ a {
 
 .encabezado__marca {
   display: inline-flex;
+  flex-shrink: 0;
   align-items: center;
   gap: 0.4rem;
+  white-space: nowrap;
   font-size: 1.25rem;
   font-weight: 700;
   color: var(--color-primario);
@@ -89,6 +91,7 @@ a {
 .navegacion a {
   color: var(--color-texto);
   text-decoration: none;
+  white-space: nowrap;
 }
 
 .navegacion a.active {
@@ -101,8 +104,12 @@ a {
 }
 
 .navegacion__usuario {
-  color: var(--color-texto-suave);
+  max-width: 14rem;
+  overflow: hidden;
   font-size: 0.925rem;
+  color: var(--color-texto-suave);
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 .portada {
@@ -786,7 +793,9 @@ a {
 
   .navegacion a,
   .navegacion__usuario {
+    max-width: none;
     padding: 0.625rem 0;
+    white-space: normal;
     border-bottom: 1px solid var(--color-borde);
   }
 
@@ -998,4 +1007,35 @@ a {
   .icono--girando {
     animation-duration: 3s;
   }
+}
+
+/* Textos largos: si una palabra no entra (por ejemplo un título sin espacios),
+   se corta en vez de ensanchar la tarjeta o la página */
+
+h1,
+h2,
+h3,
+p,
+.tarjeta,
+.texto-con-saltos,
+.registro__datos,
+.aviso > span:last-child,
+.tarjeta-mascota__datos,
+.perfil__cabecera h1,
+.tablero__mascota h3,
+.lista-datos dd,
+.lista-responsables strong,
+.navegacion__usuario,
+.dialogo__mensaje {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.registro__titulo strong,
+.perfil__grilla > * {
+  min-width: 0;
+}
+
+.lista-datos dt {
+  flex-shrink: 0;
 }

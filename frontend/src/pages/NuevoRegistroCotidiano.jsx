@@ -5,6 +5,7 @@ import { crearRegistroCotidiano } from '../services/registroCotidianoService.js'
 import { obtenerMascota } from '../services/mascotaService.js';
 import { obtenerMensajeError } from '../services/api.js';
 import { hoyLocal } from '../utils/fechas.js';
+import { LARGO_MAXIMO } from '../utils/largos.js';
 
 function NuevoRegistroCotidiano() {
   const { mascota, setMascota } = useOutletContext();
@@ -95,6 +96,7 @@ function NuevoRegistroCotidiano() {
             name="texto"
             rows="3"
             value={form.texto}
+            maxLength={LARGO_MAXIMO.nota}
             placeholder={esPeso ? 'Ej: pesado en la veterinaria' : 'Ej: empezó a comer el alimento nuevo'}
             onChange={handleChange}
           />

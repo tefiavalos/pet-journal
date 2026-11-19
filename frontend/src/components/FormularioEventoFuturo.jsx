@@ -4,6 +4,7 @@ import Alerta from './Alerta.jsx';
 import { obtenerMensajeError } from '../services/api.js';
 import { TIPOS_CONSULTA } from '../utils/registros.js';
 import { hoyLocal } from '../utils/fechas.js';
+import { LARGO_MAXIMO } from '../utils/largos.js';
 
 export const EVENTO_VACIO = { fecha: '', hora: '', titulo: '', tipoConsulta: 'CONTROL', descripcion: '' };
 
@@ -64,6 +65,7 @@ function FormularioEventoFuturo({ valoresIniciales = EVENTO_VACIO, onGuardar, te
             type="text"
             name="titulo"
             value={form.titulo}
+            maxLength={LARGO_MAXIMO.titulo}
             placeholder="Ej: Turno veterinario"
             onChange={handleChange}
           />
@@ -89,6 +91,7 @@ function FormularioEventoFuturo({ valoresIniciales = EVENTO_VACIO, onGuardar, te
           name="descripcion"
           rows="3"
           value={form.descripcion}
+          maxLength={LARGO_MAXIMO.descripcion}
           placeholder="Ej: refuerzo de vacuna antirrábica, llevar los estudios..."
           onChange={handleChange}
         />
