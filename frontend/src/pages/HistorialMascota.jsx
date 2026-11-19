@@ -6,6 +6,7 @@ import { obtenerMensajeError } from '../services/api.js';
 import { formatearFecha } from '../utils/mascotas.js';
 import { TIPOS_TAREA, TIPOS_REGISTRO, TIPOS_CONSULTA, textoTipo, iconoRegistro } from '../utils/registros.js';
 import Icono from '../components/Icono.jsx';
+import TextoDesplegable from '../components/TextoDesplegable.jsx';
 
 const FILTROS_INICIALES = { categoria: '', tipo: '', desde: '', hasta: '' };
 
@@ -131,7 +132,7 @@ function HistorialMascota() {
                         {registro.categoria === 'veterinario' ? textoTipo(registro.tipo) : 'Cotidiano'}
                       </span>
                     </div>
-                    {registro.descripcion && <p className="texto-con-saltos">{registro.descripcion}</p>}
+                    {registro.descripcion && <TextoDesplegable>{registro.descripcion}</TextoDesplegable>}
                     <p className="texto-secundario">
                       {registro.hora && `${registro.hora} hs`}
                       {registro.hora && registro.realizadaPor && ' · '}

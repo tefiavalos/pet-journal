@@ -11,6 +11,7 @@ import { obtenerMensajeError } from '../services/api.js';
 import { textoTipo, iconoRegistro } from '../utils/registros.js';
 import { aTextoDia, formatearFechaHora } from '../utils/fechas.js';
 import Icono from '../components/Icono.jsx';
+import TextoDesplegable from '../components/TextoDesplegable.jsx';
 
 const TEXTO_ESTADO = { REALIZADO: 'Realizado', CANCELADO: 'Cancelado' };
 
@@ -116,7 +117,9 @@ function EventosMascota() {
                   {yaPaso && <span className="etiqueta etiqueta--vencido">Ya pasó: ¿se realizó?</span>}
                 </div>
                 <p>{formatearFechaHora(evento.fecha)} hs</p>
-                {evento.descripcion && <p className="texto-secundario texto-con-saltos">{evento.descripcion}</p>}
+                {evento.descripcion && (
+                  <TextoDesplegable className="texto-secundario">{evento.descripcion}</TextoDesplegable>
+                )}
               </div>
               <div className="acciones">
                 <button type="button" className="boton boton--chico" onClick={() => handleRealizado(evento)}>

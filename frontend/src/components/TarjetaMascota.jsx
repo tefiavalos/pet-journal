@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
-import { calcularEdad, iconoTipo } from '../utils/mascotas.js';
-import Icono from './Icono.jsx';
+import { calcularEdad } from '../utils/mascotas.js';
+import FotoMascota from './FotoMascota.jsx';
 
 function TarjetaMascota({ mascota }) {
   const detalles = [mascota.raza, calcularEdad(mascota.fechaNacimiento)].filter(Boolean);
@@ -8,7 +8,7 @@ function TarjetaMascota({ mascota }) {
   return (
     <Link to={`/mascotas/${mascota._id}`} className="tarjeta-mascota">
       <div className="tarjeta-mascota__foto">
-        {mascota.foto ? <img src={mascota.foto} alt={mascota.nombre} /> : <Icono nombre={iconoTipo(mascota.tipo)} titulo={mascota.nombre} />}
+        <FotoMascota mascota={mascota} />
       </div>
 
       <div className="tarjeta-mascota__datos">

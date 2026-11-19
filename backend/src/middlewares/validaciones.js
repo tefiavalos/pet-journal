@@ -9,6 +9,7 @@ import { CATEGORIAS_HISTORIAL } from '../utils/historial.js';
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const PASSWORD_MIN = 8;
+const NACIMIENTO_MINIMO = new Date('1900-01-01T00:00:00.000Z');
 
 // Largo máximo de los textos (el frontend usa los mismos en los formularios)
 export const LARGO_MAXIMO = {
@@ -81,8 +82,14 @@ function vacio(valor) {
   return valor === undefined || valor === null || (typeof valor === 'string' && valor.trim() === '');
 }
 
+// Recorta espacios y deja como máximo una línea en blanco seguida
 function textoOpcional(valor) {
-  return vacio(valor) ? null : String(valor).trim();
+  return vacio(valor)
+    ? null
+    : String(valor)
+        .trim()
+        .replace(/\r\n/g, '\n')
+        .replace(/\n{3,}/g, '\n\n');
 }
 
 export function validarMascota(req, res, next) {
@@ -127,6 +134,8 @@ export function validarMascota(req, res, next) {
       errores.push('La fecha de nacimiento no es válida');
     } else if (fecha > new Date()) {
       errores.push('La fecha de nacimiento no puede ser futura');
+    } else if (fecha < NACIMIENTO_MINIMO) {
+      errores.push('La fecha de nacimiento no puede ser anterior a 1900');
     } else {
       mascota.fechaNacimiento = fecha;
     }

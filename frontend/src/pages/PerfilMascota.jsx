@@ -5,6 +5,7 @@ import { useConfirmacion } from '../hooks/useConfirmacion.jsx';
 import { eliminarMascota } from '../services/mascotaService.js';
 import { obtenerMensajeError } from '../services/api.js';
 import { calcularEdad, formatearFecha } from '../utils/mascotas.js';
+import TextoDesplegable from '../components/TextoDesplegable.jsx';
 
 const TEXTO_TIPO = { perro: 'Perro', gato: 'Gato', otro: 'Otro' };
 const TEXTO_SEXO = { hembra: 'Hembra', macho: 'Macho' };
@@ -93,7 +94,11 @@ function PerfilMascota() {
 
         <article className="tarjeta">
           <h2>Condiciones médicas</h2>
-          <p className="texto-con-saltos">{mascota.condicionesMedicas || 'Sin condiciones médicas cargadas.'}</p>
+          {mascota.condicionesMedicas ? (
+            <TextoDesplegable>{mascota.condicionesMedicas}</TextoDesplegable>
+          ) : (
+            <p>Sin condiciones médicas cargadas.</p>
+          )}
         </article>
 
         <article className="tarjeta">

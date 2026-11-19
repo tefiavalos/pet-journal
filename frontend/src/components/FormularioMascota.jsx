@@ -15,6 +15,8 @@ export const MASCOTA_VACIA = {
   condicionesMedicas: '',
 };
 
+const NACIMIENTO_MINIMO = '1900-01-01';
+
 function validar(form) {
   if (!form.nombre.trim()) return 'El nombre es obligatorio';
   if (form.peso !== '' && Number(form.peso) < 0) return 'El peso no puede ser negativo';
@@ -22,6 +24,9 @@ function validar(form) {
   const hoy = new Date().toISOString().slice(0, 10);
   if (form.fechaNacimiento && form.fechaNacimiento > hoy) {
     return 'La fecha de nacimiento no puede ser futura';
+  }
+  if (form.fechaNacimiento && form.fechaNacimiento < NACIMIENTO_MINIMO) {
+    return 'La fecha de nacimiento no puede ser anterior a 1900';
   }
 
   if (form.foto.trim() && !/^https?:\/\//.test(form.foto.trim())) {
@@ -103,7 +108,14 @@ function FormularioMascota({ valoresIniciales = MASCOTA_VACIA, onGuardar, textoB
           <span>
             Fecha de nacimiento <small>(opcional)</small>
           </span>
-          <input type="date" name="fechaNacimiento" value={form.fechaNacimiento} max={hoy} onChange={handleChange} />
+          <input
+            type="date"
+            name="fechaNacimiento"
+            value={form.fechaNacimiento}
+            min={NACIMIENTO_MINIMO}
+            max={hoy}
+            onChange={handleChange}
+          />
         </label>
 
         <label className="campo">

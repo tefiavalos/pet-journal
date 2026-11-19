@@ -1039,3 +1039,29 @@ p,
 .lista-datos dt {
   flex-shrink: 0;
 }
+
+/* Textos de varias líneas recortados (components/TextoDesplegable.jsx) */
+
+.texto-recortado {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 6;
+  line-clamp: 6;
+}
+
+.boton-texto {
+  padding: 0;
+  margin-top: 0.25rem;
+  font: inherit;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--color-primario);
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.boton-texto:hover {
+  text-decoration: underline;
+}
