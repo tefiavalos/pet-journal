@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import { Link, NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext.jsx';
+import Icono from './Icono.jsx';
+import IndicadorConexion from './IndicadorConexion.jsx';
 
 function Layout() {
   const { usuario, estaAutenticado, cerrarSesion } = useAuth();
@@ -23,7 +25,7 @@ function Layout() {
       <header className="encabezado">
         <div className="contenedor encabezado__contenido">
           <Link to="/" className="encabezado__marca">
-            🐾 Pet Journal
+            <Icono nombre="pata" /> Pet Journal
           </Link>
 
           <button
@@ -33,7 +35,7 @@ function Layout() {
             aria-expanded={menuAbierto}
             aria-label="Abrir menú"
           >
-            {menuAbierto ? '✕' : '☰'}
+            <Icono nombre={menuAbierto ? 'cerrar' : 'menu'} />
           </button>
 
           {estaAutenticado ? (
@@ -59,6 +61,8 @@ function Layout() {
       <main className="contenedor layout__principal">
         <Outlet />
       </main>
+
+      <IndicadorConexion />
 
       <footer className="pie">
         <div className="contenedor">Pet Journal · {new Date().getFullYear()}</div>

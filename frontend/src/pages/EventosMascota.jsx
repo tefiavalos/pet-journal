@@ -10,6 +10,7 @@ import {
 import { obtenerMensajeError } from '../services/api.js';
 import { textoTipo, iconoRegistro } from '../utils/registros.js';
 import { aTextoDia, formatearFechaHora } from '../utils/fechas.js';
+import Icono from '../components/Icono.jsx';
 
 const TEXTO_ESTADO = { REALIZADO: 'Realizado', CANCELADO: 'Cancelado' };
 
@@ -105,7 +106,9 @@ function EventosMascota() {
           const yaPaso = new Date(evento.fecha) < ahora;
           return (
             <li key={evento._id} className={`registro registro--veterinario ${yaPaso ? 'registro--vencido' : ''}`}>
-              <span className="registro__icono">{iconoRegistro(evento.tipoConsulta)}</span>
+              <span className="registro__icono">
+              <Icono nombre={iconoRegistro(evento.tipoConsulta)} />
+            </span>
               <div className="registro__datos">
                 <div className="registro__titulo">
                   <strong>{evento.titulo}</strong>
@@ -143,7 +146,9 @@ function EventosMascota() {
             <ul className="lista-registros lista-registros--anteriores">
               {anteriores.map((evento) => (
                 <li key={evento._id} className="registro registro--inactivo">
-                  <span className="registro__icono">{iconoRegistro(evento.tipoConsulta)}</span>
+                  <span className="registro__icono">
+              <Icono nombre={iconoRegistro(evento.tipoConsulta)} />
+            </span>
                   <div className="registro__datos">
                     <div className="registro__titulo">
                       <strong>{evento.titulo}</strong>

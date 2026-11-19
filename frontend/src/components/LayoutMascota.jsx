@@ -5,6 +5,7 @@ import MenuMascota from './MenuMascota.jsx';
 import { obtenerMascota } from '../services/mascotaService.js';
 import { obtenerMensajeError } from '../services/api.js';
 import { iconoTipo } from '../utils/mascotas.js';
+import Icono from './Icono.jsx';
 
 // Encabezado y menú comunes a todas las secciones de una mascota.
 // La mascota se carga una sola vez y se pasa a cada sección con el contexto del Outlet.
@@ -37,7 +38,7 @@ function LayoutMascota() {
 
       <div className="perfil__cabecera">
         <div className="perfil__foto">
-          {mascota.foto ? <img src={mascota.foto} alt={mascota.nombre} /> : <span>{iconoTipo(mascota.tipo)}</span>}
+          {mascota.foto ? <img src={mascota.foto} alt={mascota.nombre} /> : <Icono nombre={iconoTipo(mascota.tipo)} titulo={mascota.nombre} />}
         </div>
         <h1>{mascota.nombre}</h1>
       </div>

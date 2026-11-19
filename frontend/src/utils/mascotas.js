@@ -1,7 +1,8 @@
+// Nombre del ícono (components/Icono.jsx) según el tipo de mascota
 const ICONOS_TIPO = {
-  perro: '🐶',
-  gato: '🐱',
-  otro: '🐾',
+  perro: 'perro',
+  gato: 'gato',
+  otro: 'pata',
 };
 
 export function iconoTipo(tipo) {

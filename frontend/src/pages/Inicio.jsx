@@ -1,9 +1,16 @@
+import { useEffect } from 'react';
 import { Link, Navigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext.jsx';
-import EstadoApi from '../components/EstadoApi.jsx';
+import { obtenerEstadoApi } from '../services/healthService.js';
 
 function Inicio() {
   const { estaAutenticado, cargando } = useAuth();
+
+  // Mientras se lee la portada, despierta al servidor (Render gratuito se suspende sin uso),
+  // así el registro o el login responden más rápido. No muestra nada en pantalla.
+  useEffect(() => {
+    obtenerEstadoApi({ silencioso: true }).catch(() => {});
+  }, []);
 
   if (!cargando && estaAutenticado) {
     return <Navigate to="/hoy" replace />;
@@ -20,8 +27,6 @@ function Inicio() {
         </Link>
         <Link to="/login">Ya tengo cuenta</Link>
       </div>
-
-      <EstadoApi />
     </section>
   );
 }

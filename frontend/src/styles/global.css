@@ -71,6 +71,9 @@ a {
 }
 
 .encabezado__marca {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
   font-size: 1.25rem;
   font-weight: 700;
   color: var(--color-primario);
@@ -319,6 +322,7 @@ a {
   justify-content: center;
   aspect-ratio: 4 / 3;
   font-size: 4rem;
+  color: var(--color-primario);
   background-color: #f6e9ee;
 }
 
@@ -458,7 +462,16 @@ a {
 }
 
 .registro__icono {
-  font-size: 1.5rem;
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  font-size: 1.25rem;
+  color: var(--color-primario);
+  background-color: #f6e9ee;
+  border-radius: 50%;
 }
 
 .registro__datos {
@@ -581,6 +594,8 @@ a {
 }
 
 .aviso__icono {
+  display: inline-flex;
+  flex-shrink: 0;
   font-size: 1.25rem;
 }
 
@@ -633,6 +648,7 @@ a {
   width: 140px;
   height: 140px;
   font-size: 4.5rem;
+  color: var(--color-primario);
   background-color: #f6e9ee;
   border-radius: 50%;
 }
@@ -719,24 +735,6 @@ a {
   background-color: var(--color-fondo);
   border: 1px dashed var(--color-primario);
   border-radius: 8px;
-}
-
-.estado-api {
-  display: inline-block;
-  padding: 0.5rem 0.875rem;
-  font-size: 0.875rem;
-  color: var(--color-texto-suave);
-  background-color: var(--color-superficie);
-  border: 1px solid var(--color-borde);
-  border-radius: var(--radio);
-}
-
-.estado-api--ok {
-  color: var(--color-exito);
-}
-
-.estado-api--error {
-  color: var(--color-error);
 }
 
 .encabezado__menu {
@@ -932,5 +930,72 @@ a {
 @media (max-width: 400px) {
   .dialogo__acciones .boton {
     flex: 1;
+  }
+}
+
+/* Íconos (components/Icono.jsx) */
+
+.icono {
+  display: inline-block;
+  flex-shrink: 0;
+  vertical-align: -0.15em;
+}
+
+.tarjeta-mascota__foto .icono,
+.perfil__foto .icono {
+  stroke-width: 1.5;
+}
+
+.tarea__check .icono,
+.encabezado__menu .icono {
+  display: block;
+  margin: auto;
+}
+
+.icono--girando {
+  animation: girar 1s linear infinite;
+}
+
+@keyframes girar {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Indicador de conexión: aparece si el servidor tarda en responder */
+
+.conexion {
+  position: fixed;
+  bottom: 1rem;
+  left: 50%;
+  z-index: 10;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  width: max-content;
+  max-width: calc(100% - 2rem);
+  padding: 0.75rem 1rem;
+  font-size: 0.9rem;
+  color: var(--color-texto);
+  background-color: var(--color-superficie);
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio);
+  box-shadow: 0 8px 24px rgb(0 0 0 / 0.12);
+  transform: translateX(-50%);
+}
+
+.conexion > .icono {
+  font-size: 1.25rem;
+  color: var(--color-primario);
+}
+
+.conexion p {
+  margin: 0.25rem 0 0;
+  color: var(--color-texto-suave);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .icono--girando {
+    animation-duration: 3s;
   }
 }

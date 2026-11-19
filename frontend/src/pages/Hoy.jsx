@@ -8,6 +8,7 @@ import { listarTareasDelDia, cambiarEstadoTarea } from '../services/tareaService
 import { obtenerMensajeError } from '../services/api.js';
 import { hoyLocal, formatearDiaLargo } from '../utils/fechas.js';
 import { iconoTipo } from '../utils/mascotas.js';
+import Icono from '../components/Icono.jsx';
 
 // Agrupa las tareas por mascota, manteniendo el orden por hora
 function agruparPorMascota(tareas) {
@@ -73,7 +74,13 @@ function Hoy() {
         <h2>Tareas de hoy</h2>
         {tareas.length > 0 && (
           <p className="texto-secundario">
-            {pendientes === 0 ? '¡Todo hecho por hoy! 🎉' : `Quedan ${pendientes} de ${tareas.length}`}
+            {pendientes === 0 ? (
+              <>
+                ¡Todo hecho por hoy! <Icono nombre="fiesta" />
+              </>
+            ) : (
+              `Quedan ${pendientes} de ${tareas.length}`
+            )}
           </p>
         )}
       </div>
@@ -96,7 +103,7 @@ function Hoy() {
           <article key={mascota._id} className="tarjeta tablero__mascota">
             <h3>
               <Link to={`/mascotas/${mascota._id}/tareas`}>
-                {iconoTipo(mascota.tipo)} {mascota.nombre}
+                <Icono nombre={iconoTipo(mascota.tipo)} /> {mascota.nombre}
               </Link>
             </h3>
             <ul className="lista-registros">

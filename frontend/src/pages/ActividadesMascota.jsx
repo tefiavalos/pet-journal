@@ -11,6 +11,7 @@ import {
 import { obtenerMensajeError } from '../services/api.js';
 import { TIPOS_TAREA, textoTipo, iconoRegistro } from '../utils/registros.js';
 import { hoyLocal } from '../utils/fechas.js';
+import Icono from '../components/Icono.jsx';
 
 const FORM_VACIO = { tipo: 'ALIMENTACION', hora: '', descripcion: '' };
 
@@ -182,7 +183,9 @@ function ActividadesMascota() {
       <ul className="lista-registros">
         {actividades.map((actividad) => (
           <li key={actividad._id} className={`registro ${actividad.activa ? '' : 'registro--inactivo'}`}>
-            <span className="registro__icono">{iconoRegistro(actividad.tipo)}</span>
+            <span className="registro__icono">
+              <Icono nombre={iconoRegistro(actividad.tipo)} />
+            </span>
             <div className="registro__datos">
               <div className="registro__titulo">
                 <strong>

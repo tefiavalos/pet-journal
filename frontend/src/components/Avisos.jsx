@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { obtenerAvisos } from '../services/eventoFuturoService.js';
 import { textoAviso } from '../utils/avisos.js';
+import Icono from './Icono.jsx';
 
 // RF12: al ingresar se muestran los turnos de los próximos días
 function Avisos() {
@@ -26,7 +27,9 @@ function Avisos() {
             to={`/mascotas/${evento.mascotaId?._id}/eventos`}
             className={`aviso ${vencido ? 'aviso--vencido' : ''}`}
           >
-            <span className="aviso__icono">{vencido ? '⚠️' : '🔔'}</span>
+            <span className="aviso__icono">
+              <Icono nombre={vencido ? 'alerta' : 'campana'} />
+            </span>
             <span>{texto}</span>
           </Link>
         );

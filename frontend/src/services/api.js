@@ -21,8 +21,25 @@ const api = axios.create({
   },
 });
 
+// Cantidad de peticiones esperando respuesta. IndicadorConexion la escucha
+// para mostrar el loader cuando el servidor tarda (por ejemplo, si Render estaba dormido)
+let pendientes = 0;
+const oyentes = new Set();
+
+function actualizarPendientes(config, cambio) {
+  if (config?.silencioso) return;
+  pendientes += cambio;
+  oyentes.forEach((oyente) => oyente(pendientes));
+}
+
+export function escucharPendientes(oyente) {
+  oyentes.add(oyente);
+  return () => oyentes.delete(oyente);
+}
+
 // Si hay sesión iniciada, cada petición viaja con el token
 api.interceptors.request.use((config) => {
+  actualizarPendientes(config, 1);
   const token = obtenerToken();
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
@@ -38,8 +55,12 @@ export function configurarSesionExpirada(callback) {
 }
 
 api.interceptors.response.use(
-  (respuesta) => respuesta,
+  (respuesta) => {
+    actualizarPendientes(respuesta.config, -1);
+    return respuesta;
+  },
   (error) => {
+    actualizarPendientes(error.config, -1);
     const teniaToken = Boolean(error.config?.headers?.Authorization);
     if (error.response?.status === 401 && teniaToken && alExpirarSesion) {
       alExpirarSesion();

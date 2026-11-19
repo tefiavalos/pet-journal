@@ -5,6 +5,7 @@ import { obtenerHistorial } from '../services/historialService.js';
 import { obtenerMensajeError } from '../services/api.js';
 import { formatearFecha } from '../utils/mascotas.js';
 import { TIPOS_TAREA, TIPOS_REGISTRO, TIPOS_CONSULTA, textoTipo, iconoRegistro } from '../utils/registros.js';
+import Icono from '../components/Icono.jsx';
 
 const FILTROS_INICIALES = { categoria: '', tipo: '', desde: '', hasta: '' };
 
@@ -120,7 +121,9 @@ function HistorialMascota() {
             <ul className="lista-registros">
               {delDia.map((registro) => (
                 <li key={registro._id} className={`registro registro--${registro.categoria}`}>
-                  <span className="registro__icono">{iconoRegistro(registro.tipo)}</span>
+                  <span className="registro__icono">
+              <Icono nombre={iconoRegistro(registro.tipo)} />
+            </span>
                   <div className="registro__datos">
                     <div className="registro__titulo">
                       <strong>{registro.titulo}</strong>

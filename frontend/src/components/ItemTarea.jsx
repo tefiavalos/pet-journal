@@ -1,5 +1,6 @@
 import { textoTipo, iconoRegistro } from '../utils/registros.js';
 import { formatearHora } from '../utils/fechas.js';
+import Icono from './Icono.jsx';
 
 // Una tarea del día con el botón para marcarla como hecha o volverla a pendiente
 function ItemTarea({ tarea, onCambiarEstado, deshabilitada, mostrarMascota = false }) {
@@ -14,10 +15,12 @@ function ItemTarea({ tarea, onCambiarEstado, deshabilitada, mostrarMascota = fal
         disabled={deshabilitada}
         aria-label={hecha ? 'Marcar como pendiente' : 'Marcar como hecha'}
       >
-        {hecha ? '✓' : ''}
+        {hecha && <Icono nombre="check" />}
       </button>
 
-      <span className="registro__icono">{iconoRegistro(tarea.tipo)}</span>
+      <span className="registro__icono">
+        <Icono nombre={iconoRegistro(tarea.tipo)} />
+      </span>
 
       <div className="registro__datos">
         <strong>
