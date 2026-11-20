@@ -71,5 +71,7 @@ El backend usa el plan gratuito de Render: si no recibe pedidos durante un rato 
 
 Tanto el video de presentación como el informe final detallado se encuentran disponibles en la siguiente carpeta de Google Drive: https://drive.google.com/drive/folders/1w65_rWxVmowzGy3SsqE-wrhUqZwHHTbG?usp=sharing
 
+El video también está disponible en YouTube: https://youtu.be/I_4uX37ypb8
+
 El informe en PDF también está disponible en [`docs/Pet Journal - Informe final.pdf`](docs/Pet%20Journal%20-%20Informe%20final.pdf)
 
