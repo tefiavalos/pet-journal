@@ -40,7 +40,7 @@ Modelo Mongoose → MongoDB (Infraestructura)
 | Base de datos | MongoDB (Atlas en la nube, local en desarrollo) | Persistencia                                       |
 | Versionado    | Git + GitHub                                    | Repositorio único del proyecto                     |
 
-El servicio de almacenamiento de fotos de las mascotas (componente "Almacenamiento de fotos" del diagrama de arquitectura) se definirá más adelante. En la base de datos solo se guarda la URL de la imagen, en el campo `foto`, así que esa elección no modifica el esquema.
+La foto de la mascota se carga como un link a una imagen y en la base de datos se guarda esa URL, en el campo `foto`. La subida de archivos no se implementó, por lo que el componente "Almacenamiento de fotos" del diagrama de arquitectura quedó como trabajo futuro.
 
 ## Justificación de las decisiones técnicas
 
